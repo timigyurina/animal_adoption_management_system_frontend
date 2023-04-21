@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
 import Layout from "./Components/Layout";
 import Home from "./Components/Home.";
 import Login from "./Components/Login";
@@ -12,13 +11,15 @@ import AdoptionApplications from "./Components/Content/AdoptionApplications";
 import Users from "./Components/Content/Users";
 import AdoptionContracts from "./Components/Content/AdoptionContracts";
 import MyProfile from "./Components/Content/user/MyProfile";
+import { AuthContext } from "./Components/Authentication/AuthContext";
+import {useAuthentication} from "./Components/Authentication/authenticationHook";
 import "./App.css";
 
 function App() {
-  const roles = ["Administrator"];
-  const isLoggedIn = true;
+  const { login, logout, isLoggedIn, userRoles } = useAuthentication();
+
   let routes;
-  if (roles.includes("Administrator")) {
+  if (userRoles.includes("Administrator")) {
     routes = (
       <>
         <Route path="/user" element={<Users />} />
@@ -28,9 +29,10 @@ function App() {
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
-  } else if (roles.includes("ShelterEmployee")) {
+  } else if (userRoles.includes("ShelterEmployee")) {
     routes = (
       <>
         <Route path="/donation" element={<Donations />} />
@@ -39,36 +41,48 @@ function App() {
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
-  } else if (roles.includes("Adopter")) {
+  } else if (userRoles.includes("Adopter")) {
     routes = (
       <>
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
   } else if (!isLoggedIn) {
     routes = (
       <>
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate replace to="/login" />} />
       </>
     );
   }
 
   return (
-    <div className="App">
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/image" element={<Images />} />
-          <Route path="/animal" element={<Animals />} />
-          <Route path="*" element={<Navigate replace to="/" />} />
-          {routes}
-        </Route>
-      </Routes>
-    </div>
+    <AuthContext.Provider
+    value={{
+      isLoggedIn: isLoggedIn,
+      userRoles: userRoles,
+      login: login,
+      logout: logout,
+    }}
+  >
+      <div className="App">
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/image" element={<Images />} />
+            <Route path="/animal" element={<Animals />} />
+            {routes}
+
+          </Route>
+        </Routes>
+      </div>
+    </AuthContext.Provider>
   );
 }
 
