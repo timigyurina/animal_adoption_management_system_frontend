@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Authentication/AuthContext";
+
 import "./Navigation.css";
 
 const Navlinks = ({ isMobile }) => {
-  const isLoggedIn = true;
-  // only show menu links that the current User is authorized to - add queryparams: ..../validateUser?role=roleOfUserThatShouldSeeLink
-  // OR put userRoles in non-httponly cookie - ONLY use for rendering nav links, not for auth!! -
-  const roles = ["Administrator"];
+  const auth = useContext(AuthContext);
+  // only show menu links that the current User is authorized to - put userRoles in non-httponly cookie - ONLY use for rendering nav links, not for auth!! 
 
   return (
     <ul className={`nav-links ${isMobile && "nav-mobile"} `}>
@@ -19,14 +20,16 @@ const Navlinks = ({ isMobile }) => {
         <NavLink to="/image">Images</NavLink>
       </li>
 
-      {isLoggedIn && roles.includes("Administrator") && (
+      {auth.isLoggedIn && auth.userRoles.includes("Administrator") && (
         <li>
           <NavLink to="/user">Users</NavLink>
         </li>
       )}
 
-      {isLoggedIn &&
-        ["Administrator", "ShelterEmployee"].includes(roles[0]) && (
+      {/* check if userRoles contains any of the values of the array of roles that are authorized to access routes 
+      Also works with:  ["Administrator", "ShelterEmployee"].includes(auth.userRoles[0])*/}
+      {auth.isLoggedIn &&
+        auth.userRoles.some(r=> ["Administrator", "ShelterEmployee"].indexOf(r) >= 0) && (
           <>
             <li>
               <NavLink to="/donation">Donations</NavLink>
@@ -40,8 +43,8 @@ const Navlinks = ({ isMobile }) => {
           </>
         )}
 
-      {isLoggedIn &&
-        ["Administrator", "ShelterEmployee", "Adopter"].includes(roles[0]) && (
+      {auth.isLoggedIn &&
+        auth.userRoles.some(r=> ["Administrator", "ShelterEmployee", "Adopter"].indexOf(r) >= 0) && (
           <>
             <li>
               <NavLink to="/shelter">Shelters</NavLink>
@@ -55,9 +58,10 @@ const Navlinks = ({ isMobile }) => {
             </li>
           </>
         )}
-      {isLoggedIn ? (
+
+      {auth.isLoggedIn ? (
         <li>
-          <button>Log out</button> {/*onClick={auth.logout} */}
+          <button onClick={auth.logout}>Log out</button> 
         </li>
       ) : (
         <li>
