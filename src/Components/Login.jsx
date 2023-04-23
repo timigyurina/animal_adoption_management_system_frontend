@@ -16,13 +16,6 @@ const LoginForm = () => {
     return isValid;
   };
 
-  const getUserRolesCookie = () => {
-    const cookiesArray = document.cookie.split(";").map((c) => c.split("="));
-    const cookiesObject = {};
-    cookiesArray.map((c) => (cookiesObject[c[0]] = [c[1]]));
-    return cookiesObject
-  };
-
   const login = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -48,8 +41,7 @@ const LoginForm = () => {
       }
       clearInputs();
       setIsLoading(false);
-      const cookies = getUserRolesCookie()
-      auth.login(true, cookies["X-UserRoles"]);
+      auth.login();
       
     } catch (err) {
       clearInputs();

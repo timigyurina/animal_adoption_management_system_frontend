@@ -3,20 +3,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export const useAuthentication = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRoles, setuserRoles] = useState([]);
+  const [userEmail, setUserEmail] = useState(null)
+  const [userRoles, setUserRoles] = useState([]);
   let navigate = useNavigate();
   let location = useLocation();
 
-  const getUserRolesCookie = () => {
+  const createCookiesObject = () => {
     const cookiesArray = document.cookie.split(";").map((c) => c.split("="));
     const cookiesObject = {};
-    cookiesArray.map((c) => (cookiesObject[c[0]] = [c[1]]));
+    cookiesArray.map((c) => c[0] === "X-UserRoles" ? (cookiesObject[c[0]] = [c[1]]) : cookiesObject[c[0]] = c[1]);
     return cookiesObject;
   };
 
-  const login = useCallback((isLoggedIn, userRoles) => {
-    setIsLoggedIn(isLoggedIn);
-    setuserRoles(userRoles);
+  const login = useCallback(() => {
+    const cookiesObject = createCookiesObject()
+    const email = cookiesObject[" X-UserEmail"].split("%40").join("@")
+    
+    setIsLoggedIn(true);
+    setUserEmail(email)
+    setUserRoles(cookiesObject["X-UserRoles"]);
     const from = location.pathname || "/";
     navigate(from, { replace: true });
   }, []);
@@ -37,7 +42,8 @@ export const useAuthentication = () => {
       }
     } catch (err) {}
     setIsLoggedIn(false);
-    setuserRoles([]);
+    setUserEmail(null)
+    setUserRoles([]);
   }, []);
 
   const getAuthStatus = async () => {
@@ -89,11 +95,11 @@ export const useAuthentication = () => {
           return;
         }
       }
-      const cookies = getUserRolesCookie();
-      login(true, cookies["X-UserRoles"]);
+      login();
     }
+
     isAuthenticated();
   }, [login, logout]);
 
-  return { login, logout, isLoggedIn, userRoles };
+  return { login, logout, isLoggedIn, userEmail, userRoles };
 };
