@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
+import Button from "@mui/material/Button";
 import { AuthContext } from "../Authentication/AuthContext";
 
 import "./Navigation.css";
@@ -52,20 +53,16 @@ const Navlinks = ({ isMobile }) => {
             <li>
               <NavLink to="/animalBreed">Breeds</NavLink>
             </li>
-
-            <li>
-              <NavLink to="/profile">My profile</NavLink>
-            </li>
           </>
         )}
 
       {auth.isLoggedIn ? (
         <li>
-          <button onClick={auth.logout}>Log out</button> 
+          <Button variant="contained" onClick={auth.logout}>Log out</Button> 
         </li>
       ) : (
         <li>
-          <NavLink to="/login">Log in</NavLink>
+          <NavLink  to="/login">LOG IN</NavLink>
         </li>
       )}
     </ul>
