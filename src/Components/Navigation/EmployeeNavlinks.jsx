@@ -4,13 +4,25 @@ const EmployeeNavlinks = () => {
   return (
     <ul className={"nav-mobile"}>
       <li>
-        <NavLink to="/user/shelter">Managed Shelter</NavLink>
+        <NavLink to="/userShelter">Shelter Info</NavLink>
       </li>
       <li>
-        <NavLink to="/user/images">Uploaded Images</NavLink>
+        <NavLink to="/userShelter/image">Images of Shelter</NavLink>
       </li>
       <li>
-        <NavLink to="/user/managedAdoptionContracts">Managed Contracts</NavLink>
+        <NavLink to="/userShelter/adoptionApplication">Adoption Applications of Shelter</NavLink>
+      </li>
+      <li>
+        <NavLink to="/userShelter/adoptionContract">Adoption Contracts of Shelter</NavLink>
+      </li>
+      <li>
+        <NavLink to="/userShelter/donation">Donations of Shelter</NavLink>
+      </li>
+      <li>
+        <NavLink to="/userShelter/user/managedAdoptionContract">Managed Contracts</NavLink>
+      </li>
+      <li>
+        <NavLink to="/userShelter/user/image">Uploaded Images</NavLink>
       </li>
     </ul>
   );

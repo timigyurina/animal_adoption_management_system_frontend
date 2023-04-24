@@ -7,7 +7,6 @@ import "./Navigation.css";
 
 const Navlinks = ({ isMobile }) => {
   const auth = useContext(AuthContext);
-  // only show menu links that the current User is authorized to - put userRoles in non-httponly cookie - ONLY use for rendering nav links, not for auth!! 
 
   return (
     <ul className={`nav-links ${isMobile && "nav-mobile"} `}>
@@ -21,31 +20,8 @@ const Navlinks = ({ isMobile }) => {
         <NavLink to="/image">Images</NavLink>
       </li>
 
-      {auth.isLoggedIn && auth.userRoles.includes("Administrator") && (
-        <li>
-          <NavLink to="/user">Users</NavLink>
-        </li>
-      )}
-
-      {/* check if userRoles contains any of the values of the array of roles that are authorized to access routes 
-      Also works with:  ["Administrator", "ShelterEmployee"].includes(auth.userRoles[0])*/}
-      {auth.isLoggedIn &&
-        auth.userRoles.some(r=> ["Administrator", "ShelterEmployee"].indexOf(r) >= 0) && (
-          <>
-            <li>
-              <NavLink to="/donation">Donations</NavLink>
-            </li>
-            <li>
-              <NavLink to="/adoptionApplication">Applications</NavLink>
-            </li>
-            <li>
-              <NavLink to="/adoptionContract">Contracts</NavLink>
-            </li>
-          </>
-        )}
-
-      {auth.isLoggedIn &&
-        auth.userRoles.some(r=> ["Administrator", "ShelterEmployee", "Adopter"].indexOf(r) >= 0) && (
+      {auth.isLoggedIn &&(
+        // auth.userRoles.some(r=> ["Administrator", "ShelterEmployee", "Adopter"].indexOf(r) >= 0) && 
           <>
             <li>
               <NavLink to="/shelter">Shelters</NavLink>
