@@ -8,39 +8,25 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Tooltip from "@mui/material/Tooltip";
-import PetsIcon from '@mui/icons-material/Pets';
+import PetsIcon from "@mui/icons-material/Pets";
 import Navlinks from "./Navlinks";
 import PersonIcon from "@mui/icons-material/Person";
-import BadgeIcon from '@mui/icons-material/Badge';
+import BadgeIcon from "@mui/icons-material/Badge";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonalNavlinks from "./PersonalNavlinks";
 import EmployeeNavlinks from "./EmployeeNavlinks";
+import MenuBase from "./MenuBase";
+import AdminNavlinks from "./AdminNavlinks";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [anchorElEmployee, setAnchorElEmployee] = useState(null);
   const auth = useContext(AuthContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };  
+  };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-  
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenEmployeeMenu = (event) => {
-    setAnchorElEmployee(event.currentTarget);
-  };
-  const handleCloseEmployeeMenu = () => {
-    setAnchorElEmployee(null);
   };
 
   return (
@@ -121,39 +107,26 @@ const Navbar = () => {
             <Navlinks />
           </Box>
 
-          {/* Menu for Employees */}
+          {/* Admin menu (all entities) */}
           {auth.isLoggedIn &&
-            auth.userRoles.some(
-              (r) => ["Administrator", "ShelterEmployee"].indexOf(r) >= 0
-            ) && (
-              <>
-                <Box sx={{ flexGrow: 0 }}>
-                  <Tooltip title="Open Shelter-related data">
-                    <IconButton onClick={handleOpenEmployeeMenu} sx={{ p: 0, mr:1 }}>
-                      <BadgeIcon sx={{ color: "white", }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Menu
-                    sx={{ mt: "45px" }}
-                    id="menu-appbar"
-                    anchorEl={anchorElEmployee}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorElEmployee)}
-                    onClose={handleCloseEmployeeMenu}
-                  >
-                    <EmployeeNavlinks />
-                  </Menu>
-                </Box>
-                ||
-              </>
+            auth.userRoles.some((r) => ["Administrator"].indexOf(r) >= 0) && (
+              <MenuBase
+                iconChild={<ExpandMoreIcon sx={{ color: "white" }} />}
+                tooltipTitle="Admin menu"
+              >
+                <AdminNavlinks />
+              </MenuBase>
+            )}
+
+          {/* Employe emenu (own Shelter-related entities) */}
+          {auth.isLoggedIn &&
+            auth.userRoles.some((r) => ["ShelterEmployee"].indexOf(r) >= 0) && (
+              <MenuBase
+                iconChild={<BadgeIcon sx={{ color: "white" }} />}
+                tooltipTitle="Shelter-related menu"
+              >
+                <EmployeeNavlinks />
+              </MenuBase>
             )}
           {/* Personal menu */}
           {auth.isLoggedIn && (
@@ -161,31 +134,12 @@ const Navbar = () => {
               <div className="logged-in-user">
                 Logged in as <span>{auth.userEmail}</span>
               </div>
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open Personal data">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <PersonIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <PersonalNavlinks />
-                </Menu>
-              </Box>
+              <MenuBase
+                iconChild={<PersonIcon sx={{ color: "white" }} />}
+                tooltipTitle="Personal menu"
+              >
+                <PersonalNavlinks />
+              </MenuBase>
             </>
           )}
         </Toolbar>
