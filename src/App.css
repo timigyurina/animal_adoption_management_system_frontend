@@ -46,3 +46,14 @@
   }
   
   /* End of CSS reset */
+
+  body {
+    background-color: white;
+  }
+  
+  #root {
+    position: relative;
+  }
+  
+
+  

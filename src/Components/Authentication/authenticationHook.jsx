@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export const useAuthentication = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState(null)
+  const [userEmail, setUserEmail] = useState(null);
   const [userRoles, setUserRoles] = useState([]);
   let navigate = useNavigate();
   let location = useLocation();
@@ -11,16 +11,20 @@ export const useAuthentication = () => {
   const createCookiesObject = () => {
     const cookiesArray = document.cookie.split(";").map((c) => c.split("="));
     const cookiesObject = {};
-    cookiesArray.map((c) => c[0] === "X-UserRoles" ? (cookiesObject[c[0]] = [c[1]]) : cookiesObject[c[0]] = c[1]);
+    cookiesArray.map((c) =>
+      c[0] === "X-UserRoles"
+        ? (cookiesObject[c[0]] = [c[1]])
+        : (cookiesObject[c[0]] = c[1])
+    );
     return cookiesObject;
   };
 
   const login = useCallback(() => {
-    const cookiesObject = createCookiesObject()
-    const email = cookiesObject[" X-UserEmail"].split("%40").join("@")
-    
+    const cookiesObject = createCookiesObject();
+    const email = cookiesObject[" X-UserEmail"].split("%40").join("@");
+
     setIsLoggedIn(true);
-    setUserEmail(email)
+    setUserEmail(email);
     setUserRoles(cookiesObject["X-UserRoles"]);
     const from = location.pathname || "/";
     navigate(from, { replace: true });
@@ -41,8 +45,9 @@ export const useAuthentication = () => {
         return;
       }
     } catch (err) {}
+
     setIsLoggedIn(false);
-    setUserEmail(null)
+    setUserEmail(null);
     setUserRoles([]);
   }, []);
 
@@ -97,8 +102,8 @@ export const useAuthentication = () => {
       }
       login();
     }
-
     isAuthenticated();
+    
   }, [login, logout]);
 
   return { login, logout, isLoggedIn, userEmail, userRoles };
