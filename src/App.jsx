@@ -24,52 +24,53 @@ function App() {
   if (userRoles.includes("Administrator")) {
     routes = (
       <>
-        <Route path="/user/managedAdoptionContracts" element={<ManagedAdoptionContracts />} />
-        <Route path="/user/images" element={<Images />} />
-        <Route path="/user/shelter" element={<ManagedShelter />} />
+        <Route path="/user" element={<Users />} />
+        <Route path="/donation" element={<Donations />} />
+        <Route path="/image" element={<Images />} />
+        <Route path="/adoptionApplication" element={<AdoptionApplications />} />
+        <Route path="/adoptionContract" element={<AdoptionContracts />} />
+
+        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
         <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
 
-        <Route path="/user" element={<Users />} />
-        <Route path="/donation" element={<Donations />} />
-        <Route path="/adoptionApplication" element={<AdoptionApplications />} />
-        <Route path="/adoptionContract" element={<AdoptionContracts />} />
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
-        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
   } else if (userRoles.includes("ShelterEmployee")) {
     routes = (
       <>
-        <Route path="/user/managedAdoptionContracts" element={<ManagedAdoptionContracts />} />
-        <Route path="/user/images" element={<Images />} />
-        <Route path="/user/shelter" element={<ManagedShelter />} />
+        <Route path="/userShelter" element={<ManagedShelter />} />
+        <Route path="/userShelter/image" element={<Images />} />
+        <Route path="/userShelter/donation" element={<Donations />} />
+        <Route path="/userShelter/adoptionApplication" element={<AdoptionApplications />} />
+        <Route path="/userShelter/adoptionContract" element={<AdoptionContracts />} />
+        <Route path="/userShelter/user/managedAdoptionContract" element={<ManagedAdoptionContracts />} />
+        <Route path="/userShelter/user/image" element={<Images />} />
+        
+        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
         <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
-        
-        <Route path="/donation" element={<Donations />} />
-        <Route path="/adoptionApplication" element={<AdoptionApplications />} />
-        <Route path="/adoptionContract" element={<AdoptionContracts />} />
+
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
-        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
   } else if (userRoles.includes("Adopter")) {
     routes = (
       <>
+        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
         <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
         
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
-        <Route path="/user/profile" element={<MyProfile />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
