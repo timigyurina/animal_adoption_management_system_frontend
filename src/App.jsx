@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Components/Layout";
 import Home from "./Components/Home.";
+import ContactInfo from "./Components/ContactInfo";
 import Login from "./Components/Login";
 import Shelters from "./Components/Content/Shelters";
 import AnimalBreeds from "./Components/Content/AnimalBreeds";
@@ -97,6 +98,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<ContactInfo />} />
             <Route path="/image" element={<Images />} />
             <Route path="/animal" element={<Animals />} />
             {routes}
