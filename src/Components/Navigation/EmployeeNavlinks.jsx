@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const EmployeeNavlinks = () => {
   return (
-    <ul className={"nav-mobile"}>
+    <ul className="nav-links nav-mobile">
       <li>
         <NavLink to="/userShelter">Shelter Info</NavLink>
       </li>
