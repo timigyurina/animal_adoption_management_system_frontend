@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { AuthContext } from "../Authentication/AuthContext";
 import { useTheme } from "@mui/material/styles";
-import ColorModeContext from "../../theme/ColorModeContext";
+import ColorModeContext from "../../Theming/ColorModeContext";
 import MenuBase from "./MenuBase";
 import Navlinks from "./Navlinks";
 import PersonalNavlinks from "./PersonalNavlinks";
