@@ -1,0 +1,46 @@
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader > .fa-paw {
+  font-size: 30px;
+}
+
+.paw-1 {
+  transform: rotate(20deg) translateY(-20px);
+  animation: show 3s ease-in-out infinite alternate;
+  animation-delay: 1s;
+}
+
+.paw-2 {
+  transform: rotate(20deg) translateY(-40px);
+  animation: show 2s ease-in-out infinite alternate;
+  animation-delay: 2s;
+}
+
+.paw-3 {
+  transform: rotate(20deg) translate(-60px, -60px);
+  animation: show 1s ease-in-out infinite alternate;
+  animation-delay: 3s;
+}
+
+@keyframes show {
+  /* 0% {
+    opacity: 0;
+    visibility: none;
+    display: none;
+  } */
+  from {
+    opacity: 0;
+    visibility: none;
+    display: none;
+  }
+  to {
+    opacity: 1;
+    visibility: none;
+    display: inline-block;
+  }
+}
