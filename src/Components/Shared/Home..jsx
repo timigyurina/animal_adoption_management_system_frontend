@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box } from "@mui/material";
-import homeBackground from "../Images/bg-1.jpg";
+import homeBackground from "../../Images/bg-1.jpg";
+import Loader from "../UIElements/Loader";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,7 @@ const Home = () => {
   return (
     <>
       {isLoading ? (
-        <div>Loading....</div>
+        <Loader/>
       ) : (
         <div
           className="hero-box"

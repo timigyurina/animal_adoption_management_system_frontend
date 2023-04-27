@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { AuthContext } from "./Authentication/AuthContext";
+import { AuthContext } from "../Authentication/AuthContext";
+import Loader from "../UIElements/Loader";
 
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
@@ -62,9 +63,7 @@ const LoginForm = () => {
   return (
     <>
       {isLoading ? (
-        <div className="center">
-          Loading...{/* <LoadingSpinner asOverlay /> */}
-        </div>
+        <Loader/>
       ) : error ? (
         <div>
           {error} <button onClick={clearError}>Try again</button>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Grid, Typography, Box } from "@mui/material";
-import contactBackground from "../Images/bg-2.jpg";
+import contactBackground from "../../Images/bg-2.jpg";
+import Loader from "../UIElements/Loader";
 
 const ContactInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,7 @@ const ContactInfo = () => {
   return (
     <>
       {isLoading ? (
-        <div>Loading....</div>
+        <Loader/>
       ) : (
         <div
           className="hero-box"
