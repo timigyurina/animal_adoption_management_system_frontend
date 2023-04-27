@@ -10,9 +10,6 @@ const AdminNavlinks = () => {
           <NavLink to="/donation">Donations</NavLink>
         </li>
         <li>
-          <NavLink to="/image">Images</NavLink>
-        </li>
-        <li>
           <NavLink to="/adoptionApplication">Adoption Applications</NavLink>
         </li>
         <li>

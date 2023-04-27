@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./Components/Layout";
-import Home from "./Components/Home.";
-import ContactInfo from "./Components/ContactInfo";
-import Login from "./Components/Login";
+import Layout from "./Components/Shared/Layout";
+import Home from "./Components/Shared/Home.";
+import ContactInfo from "./Components/Shared/ContactInfo";
+import Login from "./Components/Shared/Login";
 import Shelters from "./Components/Content/Shelters";
 import AnimalBreeds from "./Components/Content/AnimalBreeds";
 import Donations from "./Components/Content/Donations";
@@ -27,7 +27,6 @@ function App() {
       <>
         <Route path="/user" element={<Users />} />
         <Route path="/donation" element={<Donations />} />
-        <Route path="/image" element={<Images />} />
         <Route path="/adoptionApplication" element={<AdoptionApplications />} />
         <Route path="/adoptionContract" element={<AdoptionContracts />} />
 
