@@ -1,5 +1,15 @@
 import { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
+
 import { AuthContext } from "../Authentication/AuthContext";
+import { useTheme } from "@mui/material/styles";
+import ColorModeContext from "../../Theming/ColorModeContext";
+import MenuBase from "./MenuBase";
+import Navlinks from "./Navlinks";
+import PersonalNavlinks from "./PersonalNavlinks";
+import EmployeeNavlinks from "./EmployeeNavlinks";
+import AdminNavlinks from "./AdminNavlinks";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,18 +19,18 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import PetsIcon from "@mui/icons-material/Pets";
-import Navlinks from "./Navlinks";
 import PersonIcon from "@mui/icons-material/Person";
 import BadgeIcon from "@mui/icons-material/Badge";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonalNavlinks from "./PersonalNavlinks";
-import EmployeeNavlinks from "./EmployeeNavlinks";
-import MenuBase from "./MenuBase";
-import AdminNavlinks from "./AdminNavlinks";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import HelpIcon from "@mui/icons-material/Help";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const auth = useContext(AuthContext);
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,9 +40,10 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Desktop view */}
           <PetsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -51,7 +62,6 @@ const Navbar = () => {
           >
             Adopt-US
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -84,6 +94,7 @@ const Navbar = () => {
               <Navlinks isMobile />
             </Menu>
           </Box>
+          {/* Mobile view */}
           <PetsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -106,23 +117,21 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Navlinks />
           </Box>
-
           {/* Admin menu (all entities) */}
           {auth.isLoggedIn &&
             auth.userRoles.some((r) => ["Administrator"].indexOf(r) >= 0) && (
               <MenuBase
-                iconChild={<ExpandMoreIcon sx={{ color: "white" }} />}
+                iconChild={<ExpandMoreIcon color="inherit" />}
                 tooltipTitle="Admin menu"
               >
                 <AdminNavlinks />
               </MenuBase>
             )}
-
           {/* Employe emenu (own Shelter-related entities) */}
           {auth.isLoggedIn &&
             auth.userRoles.some((r) => ["ShelterEmployee"].indexOf(r) >= 0) && (
               <MenuBase
-                iconChild={<BadgeIcon sx={{ color: "white" }} />}
+                iconChild={<BadgeIcon />}
                 tooltipTitle="Shelter-related menu"
               >
                 <EmployeeNavlinks />
@@ -135,13 +144,31 @@ const Navbar = () => {
                 Logged in as <span>{auth.userEmail}</span>
               </div>
               <MenuBase
-                iconChild={<PersonIcon sx={{ color: "white" }} />}
+                iconChild={<PersonIcon  />}
                 tooltipTitle="Personal menu"
               >
                 <PersonalNavlinks />
               </MenuBase>
             </>
           )}
+
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
+
+          <li>
+            <NavLink to="/contact">
+              <HelpIcon color="inherit" />
+            </NavLink>
+          </li>
         </Toolbar>
       </Container>
     </AppBar>

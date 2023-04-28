@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const PersonalNavlinks = () => {
   return (
-    <ul className={"nav-mobile"}>
+    <ul className="nav-links nav-mobile">
       <li>
         <NavLink to="/user/profile">Profile</NavLink>
       </li>
