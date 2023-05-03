@@ -14,8 +14,8 @@ import AdoptionContracts from "./Components/Content/AdoptionContracts";
 import MyProfile from "./Components/Content/user/MyProfile";
 import ManagedAdoptionContracts from "./Components/Content/user/ManagedAdoptionContracts";
 import ManagedShelter from "./Components/Content/user/ManagedShelter";
-import { AuthContext } from "./Components/Authentication/AuthContext";
-import {useAuthentication} from "./Components/Authentication/authenticationHook";
+import { AuthContext } from "./context/AuthContext";
+import { useAuthentication } from "./hooks/authenticationHook";
 import "./App.css";
 
 function App() {

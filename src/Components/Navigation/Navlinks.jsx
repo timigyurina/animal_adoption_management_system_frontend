@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../Authentication/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import Button from "@mui/material/Button";
 
 import "./Navigation.css";

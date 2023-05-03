@@ -1,5 +1,5 @@
 import { useState, useCallback} from "react";
-import { useAuthentication } from "../Components/Authentication/authenticationHook";
+import { useAuthentication } from "./authenticationHook";
 
 export const useFetch = () => {
   const [loading, setLoading] = useState(false);

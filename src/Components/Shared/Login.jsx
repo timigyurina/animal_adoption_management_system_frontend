@@ -1,15 +1,18 @@
 import React, { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { AuthContext } from "../Authentication/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+// import { useHttpClient } from "../../hoks/useHttpClient";
 import Loader from "../UIElements/Loader";
 
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+
   const auth = useContext(AuthContext);
+  // const { loading, error, sendRequest, clearError } = useHttpClient();
 
   const isMinLength = (value, min) => {
     let isValid = true;
@@ -17,9 +20,28 @@ const LoginForm = () => {
     return isValid;
   };
 
+  // const login = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const responseData = await sendRequest(
+  //       false,
+  //       `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
+  //       "POST",
+  //       JSON.stringify({
+  //         email: loginEmail,
+  //         password: loginPassword,
+  //       }),
+  //       {
+  //         "Content-type": "application/json",
+  //       }
+  //     );
+  //     console.log(responseData);
+  //     auth.login();
+  //   } catch (error) {}
+  // };
   const login = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
 
     try {
       const url = `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`;
@@ -37,22 +59,17 @@ const LoginForm = () => {
       if (!response.ok) {
         clearInputs();
         setError("Unauthenticated");
-        setIsLoading(false);
-        return error;
+        setLoading(false);
+        return;
       }
       clearInputs();
-      setIsLoading(false);
+      setLoading(false);
       auth.login();
-      
     } catch (err) {
       clearInputs();
-      setIsLoading(false);
-      console.log(err);
+      setError("Server seems to be down, contact support");
+      setLoading(false);
     }
-  };
-
-  const clearError = () => {
-    setError(null);
   };
 
   const clearInputs = () => {
@@ -60,13 +77,17 @@ const LoginForm = () => {
     setLoginPassword("");
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   return (
     <>
-      {isLoading ? (
-        <Loader/>
+      {loading ? (
+        <Loader />
       ) : error ? (
         <div>
-          {error} <button onClick={clearError}>Try again</button>
+          {error} <button onClick={clearError}>OK</button>
         </div>
       ) : (
         <form className="login-form" onSubmit={login}>
@@ -76,9 +97,9 @@ const LoginForm = () => {
             className="username"
             label="Username"
             placeholder="Enter your username"
-            error={!isMinLength(loginEmail, 1)}
+            error={!isMinLength(loginEmail, 3)}
             helperText={
-              !isMinLength(loginEmail, 1) && "Please enter your username"
+              !isMinLength(loginEmail, 3) && "Please enter your username"
             }
             variant="standard"
           />
@@ -89,9 +110,9 @@ const LoginForm = () => {
             className="userpassword"
             label="Password"
             placeholder="Enter your password"
-            error={!isMinLength(loginPassword, 1)}
+            error={!isMinLength(loginPassword, 6)}
             helperText={
-              !isMinLength(loginPassword, 1) && "Please enter your password"
+              !isMinLength(loginPassword, 6) && "Please enter your password"
             }
             variant="standard"
           />
@@ -99,7 +120,7 @@ const LoginForm = () => {
             type="submit"
             className="login-btn"
             disabled={
-              !isMinLength(loginEmail, 1) || !isMinLength(loginPassword, 1)
+              !isMinLength(loginEmail, 3) || !isMinLength(loginPassword, 6)
             }
             variant="contained"
           >

@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 
-import { AuthContext } from "../Authentication/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useTheme } from "@mui/material/styles";
-import ColorModeContext from "../../Theming/ColorModeContext";
+import ColorModeContext from "../../context/ColorModeContext";
 import MenuBase from "./MenuBase";
 import Navlinks from "./Navlinks";
 import PersonalNavlinks from "./PersonalNavlinks";
