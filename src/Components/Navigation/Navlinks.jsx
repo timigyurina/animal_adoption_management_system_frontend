@@ -39,9 +39,14 @@ const Navlinks = ({ isMobile }) => {
           </Button>
         </li>
       ) : (
-        <li>
-          <NavLink to="/login"> LOGIN</NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink to="/login"> LOGIN</NavLink>
+          </li>
+          <li>
+            <NavLink to="/register"> Register</NavLink>
+          </li>
+        </>
       )}
     </ul>
   );

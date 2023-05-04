@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Components/Shared/Layout";
 import Home from "./Components/Shared/Home.";
 import ContactInfo from "./Components/Shared/ContactInfo";
+import Register from "./Components/Shared/Register";
 import Login from "./Components/Shared/Login";
-import Shelters from "./Components/Content/Shelters";
+import Shelters from "./Components/Content/shelter/Shelters";
 import AnimalBreeds from "./Components/Content/AnimalBreeds";
 import Donations from "./Components/Content/Donations";
 import Animals from "./Components/Content/Animals";
@@ -19,7 +21,8 @@ import { useAuthentication } from "./hooks/authenticationHook";
 import "./App.css";
 
 function App() {
-  const { login, logout, isLoggedIn, userEmail, userRoles } = useAuthentication();
+  const { login, logout, isLoggedIn, userEmail, userRoles, isAuthenticated } =
+    useAuthentication();
 
   let routes;
   if (userRoles.includes("Administrator")) {
@@ -32,7 +35,10 @@ function App() {
 
         <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
-        <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
+        <Route
+          path="/user/adoptionApplication"
+          element={<AdoptionApplications />}
+        />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
 
         <Route path="/shelter" element={<Shelters />} />
@@ -46,14 +52,26 @@ function App() {
         <Route path="/userShelter" element={<ManagedShelter />} />
         <Route path="/userShelter/image" element={<Images />} />
         <Route path="/userShelter/donation" element={<Donations />} />
-        <Route path="/userShelter/adoptionApplication" element={<AdoptionApplications />} />
-        <Route path="/userShelter/adoptionContract" element={<AdoptionContracts />} />
-        <Route path="/userShelter/user/managedAdoptionContract" element={<ManagedAdoptionContracts />} />
+        <Route
+          path="/userShelter/adoptionApplication"
+          element={<AdoptionApplications />}
+        />
+        <Route
+          path="/userShelter/adoptionContract"
+          element={<AdoptionContracts />}
+        />
+        <Route
+          path="/userShelter/user/managedAdoptionContract"
+          element={<ManagedAdoptionContracts />}
+        />
         <Route path="/userShelter/user/image" element={<Images />} />
-        
+
         <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
-        <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
+        <Route
+          path="/user/adoptionApplication"
+          element={<AdoptionApplications />}
+        />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
 
         <Route path="/shelter" element={<Shelters />} />
@@ -66,9 +84,12 @@ function App() {
       <>
         <Route path="/user/profile" element={<MyProfile />} />
         <Route path="/user/donation" element={<Donations />} />
-        <Route path="/user/adoptionApplication" element={<AdoptionApplications />} />
+        <Route
+          path="/user/adoptionApplication"
+          element={<AdoptionApplications />}
+        />
         <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
-        
+
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="*" element={<Navigate replace to="/" />} />
@@ -78,21 +99,26 @@ function App() {
     routes = (
       <>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate replace to="/login" />} />
       </>
     );
   }
 
+  useEffect(() => {
+    isAuthenticated();
+  }, []);
+
   return (
     <AuthContext.Provider
-    value={{
-      isLoggedIn: isLoggedIn,
-      userEmail: userEmail,
-      userRoles: userRoles,
-      login: login,
-      logout: logout,
-    }}
-  >
+      value={{
+        isLoggedIn: isLoggedIn,
+        userEmail: userEmail,
+        userRoles: userRoles,
+        login: login,
+        logout: logout,
+      }}
+    >
       <div className="App">
         <Routes>
           <Route element={<Layout />}>
@@ -101,7 +127,6 @@ function App() {
             <Route path="/image" element={<Images />} />
             <Route path="/animal" element={<Animals />} />
             {routes}
-
           </Route>
         </Routes>
       </div>
