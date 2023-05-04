@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext";
 import { useTheme } from "@mui/material/styles";
@@ -43,25 +43,11 @@ const Navbar = () => {
     <AppBar position="static" color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Desktop view */}
-          <PetsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Adopt-US
-          </Typography>
+          {/* Icon for desktop view */}
+          <Box component={Link} to="/">
+            <PetsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          </Box>
+          {/* Menu with links and logo for mobile view */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -93,27 +79,20 @@ const Navbar = () => {
             >
               <Navlinks isMobile />
             </Menu>
+            <Box
+              component={Link}
+              to="/"
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <PetsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            </Box>
           </Box>
-          {/* Mobile view */}
-          <PetsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Adopt-US
-          </Typography>
+          {/* Links for desktop view */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Navlinks />
           </Box>
@@ -143,10 +122,7 @@ const Navbar = () => {
               <div className="logged-in-user">
                 Logged in as <span>{auth.userEmail}</span>
               </div>
-              <MenuBase
-                iconChild={<PersonIcon  />}
-                tooltipTitle="Personal menu"
-              >
+              <MenuBase iconChild={<PersonIcon />} tooltipTitle="Personal menu">
                 <PersonalNavlinks />
               </MenuBase>
             </>

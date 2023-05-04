@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, Paper } from "@mui/material";
 import contactBackground from "../../Images/bg-2.jpg";
 import Loader from "../UIElements/Loader";
 
@@ -22,7 +22,7 @@ const ContactInfo = () => {
   return (
     <>
       {isLoading ? (
-        <Loader/>
+        <Loader />
       ) : (
         <div
           className="hero-box"
@@ -36,11 +36,21 @@ const ContactInfo = () => {
           <Box>
             <Grid container spacing={6} className="grid-container">
               <Grid item xs={12} md={12} className="grid-item">
-                <Typography variant="h3" fontWeight={700} className="title">
-                  About and Contact
-                </Typography>
-                <Typography variant="h6" className="subtitle">Contact support...
-                </Typography>
+                <Paper
+                  elevation={3}
+                  sx={{
+                    backgroundColor: "background.transparent",
+                    padding: 2,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Typography variant="h3" fontWeight={700} className="title">
+                    About and Contact
+                  </Typography>
+                  <Typography variant="h6" className="subtitle">
+                    Contact support...
+                  </Typography>
+                </Paper>
               </Grid>
               <Grid item xs={12} md={12} className="grid-item"></Grid>
             </Grid>
@@ -48,7 +58,7 @@ const ContactInfo = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ContactInfo
+export default ContactInfo;

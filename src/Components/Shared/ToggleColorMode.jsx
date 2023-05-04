@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import ColorModeContext from "../../context/ColorModeContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { red, grey, green } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -9,42 +9,61 @@ const getDesignTokens = (mode) => ({
     primary: {
       ...(mode === "light"
         ? {
-            main: red[500],
-            light: red[200],
-            dark: red[800],
-            contrastText: grey[900],
+            main: "#E2495B ",
+            light: "#df606f ",
+            dark: "#ec1f37 ",
+            contrastText: "#F4ED6E  ",
           }
         : {
             main: "#fff",
-            light: grey[200],
-            dark: grey[800],
-            contrastText: grey[900],
+            light: "#4d194d",
+            dark: "#272640",
+            contrastText: "#f1cef1",
           }),
     },
     secondary: {
       ...(mode === "light"
         ? {
-            main: green[500],
-            light: green[200],
-            dark: green[800],
-            contrastText: grey[900],
+            main: "#C4BA3B  ",
+            light: "#F4ED6E" ,
+            dark: "#f4ed6e96" ,
+            contrastText: "#ec1f37",
           }
         : {
             main: "#fff",
-            light: grey[200],
-            dark: grey[800],
-            contrastText: grey[900],
+            light: "#1b3a4b",
+            dark: "#272640",
+            contrastText: "#272640",
+          }),
+    },
+    ternary: {
+      ...(mode === "light"
+        ? {
+            main: "#84b960  ",
+            light: "#90a955" ,
+            dark: "#3d7236" ,
+            contrastText: "#ec3123",
+          }
+        : {
+            main: "#e2dada",
+            light: "#144552",
+            dark: "#144552",
+            contrastText: "#3c97b1",
           }),
     },
     background: {
       ...(mode === "light"
         ? {
-            default: green[500],
-            paper: green[200],
+            default: "#F4ED6E",
+            paper: "#FFFEE6",
+            transparent: "#fffee68b",
+            green: "#84b960"
           }
         : {
             default: "#000",
-            paper: grey[600],
+            paper: "#272640",
+            transparent: "#27264094",
+            green: "#18392b"
           }),
     },
     text: {
@@ -73,7 +92,7 @@ export default function ToggleColorMode({ children }) {
         );
       },
     }),
-    []
+    [lightModeTheme, darkModeTheme]
   );
 
   const Theme = useMemo(() => createTheme(mode), [mode]);
