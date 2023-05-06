@@ -25,8 +25,8 @@ const getDesignTokens = (mode) => ({
       ...(mode === "light"
         ? {
             main: "#C4BA3B  ",
-            light: "#F4ED6E" ,
-            dark: "#f4ed6e96" ,
+            light: "#F4ED6E",
+            dark: "#f4ed6e96",
             contrastText: "#ec1f37",
           }
         : {
@@ -40,8 +40,8 @@ const getDesignTokens = (mode) => ({
       ...(mode === "light"
         ? {
             main: "#84b960  ",
-            light: "#90a955" ,
-            dark: "#3d7236" ,
+            light: "#90a955",
+            dark: "#3d7236",
             contrastText: "#ec3123",
           }
         : {
@@ -57,13 +57,13 @@ const getDesignTokens = (mode) => ({
             default: "#F4ED6E",
             paper: "#FFFEE6",
             transparent: "#fffee68b",
-            green: "#84b960"
+            green: "#84b960",
           }
         : {
             default: "#000",
             paper: "#272640",
             transparent: "#27264094",
-            green: "#18392b"
+            green: "#18392b",
           }),
     },
     text: {

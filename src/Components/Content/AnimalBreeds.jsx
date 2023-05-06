@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFetch } from "../../hooks/useFetch";
-import Loader from "../UIElements/Loader";
+import Loader from "../SharedElements/Loader";
 
 const AnimalBreeds = () => {
   const [animalBreeds, setAnimalBreeds] = useState([]);

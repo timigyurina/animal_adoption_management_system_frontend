@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./Components/Shared/Layout";
-import Home from "./Components/Shared/Home.";
-import ContactInfo from "./Components/Shared/ContactInfo";
-import Register from "./Components/Shared/Register";
-import Login from "./Components/Shared/Login";
+import { AuthContext } from "./context/AuthContext";
+import { useAuthentication } from "./hooks/authenticationHook";
+
+import Home from "./Components/Content/shared/Home";
+import Layout from "./Components/SharedElements/Layout";
+import ContactInfo from "./Components/Content/shared/ContactInfo";
+import Register from "./Components/Content/shared/Register";
+import Login from "./Components/Content/shared/Login";
 import Shelters from "./Components/Content/shelter/Shelters";
 import AnimalBreeds from "./Components/Content/AnimalBreeds";
 import Donations from "./Components/Content/Donations";
@@ -16,8 +19,6 @@ import AdoptionContracts from "./Components/Content/AdoptionContracts";
 import MyProfile from "./Components/Content/user/MyProfile";
 import ManagedAdoptionContracts from "./Components/Content/user/ManagedAdoptionContracts";
 import ManagedShelter from "./Components/Content/user/ManagedShelter";
-import { AuthContext } from "./context/AuthContext";
-import { useAuthentication } from "./hooks/authenticationHook";
 import "./App.css";
 
 function App() {
