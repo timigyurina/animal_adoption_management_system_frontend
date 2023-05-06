@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Grid, Typography, Box, Paper } from "@mui/material";
-import contactBackground from "../../Images/bg-2.jpg";
-import Loader from "../UIElements/Loader";
+import contactBackground from "../../../Images/bg-2.jpg";
+import Loader from "../../SharedElements/Loader";
 
 const ContactInfo = () => {
   const [isLoading, setIsLoading] = useState(false);

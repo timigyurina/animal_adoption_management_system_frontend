@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Typography, Button, Box, Paper } from "@mui/material";
-import homeBackground from "../../Images/bg-1.jpg";
-import Loader from "../UIElements/Loader";
+import homeBackground from "../../../Images/bg-1.jpg";
+import Loader from "../../SharedElements/Loader";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);

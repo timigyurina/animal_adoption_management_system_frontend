@@ -1,0 +1,23 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.registration-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  
+  width: 80%;
+  max-width: 1000px;
+  padding: 1em;
+}
+
+.register-btn,
+.login-btn {
+  align-self: center;
+  width: 50%;
+}
