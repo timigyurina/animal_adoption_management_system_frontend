@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import { useAuthentication } from "./hooks/authenticationHook";
+import { useAuthentication } from "./hooks/useAuthentication";
 
 import Home from "./Components/Content/shared/Home";
 import Layout from "./Components/SharedElements/Layout";

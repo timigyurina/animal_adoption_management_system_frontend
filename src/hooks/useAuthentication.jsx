@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const useAuthentication = () => {
@@ -67,7 +67,6 @@ export const useAuthentication = () => {
       }
       return true;
     } catch (err) {
-      console.log("authstatus");
       return false;
     }
   }, []);
@@ -96,17 +95,13 @@ export const useAuthentication = () => {
     const authStatus = await getAuthStatus();
     if (!authStatus) {
       const gotRefreshToken = await getRefreshToken();
-      if (!gotRefreshToken) {
+      if (!gotRefreshToken && isLoggedIn) {
         logout();
-        return;
       }
+      return;
     }
     login();
-  }, []);
-
-  useEffect(() => {
-    isAuthenticated();
-  }, []);
+  }, [getAuthStatus, getRefreshToken, login, logout, isLoggedIn]);
 
   return {
     login,
@@ -114,6 +109,6 @@ export const useAuthentication = () => {
     isLoggedIn,
     userEmail,
     userRoles,
-    isAuthenticated
+    isAuthenticated,
   };
 };
