@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../../../hooks/useFetch";
 import Loader from "../../SharedElements/Loader";
 import AnimalBreedCard from "./AnimalBreedCard";
@@ -9,30 +9,59 @@ import AnimalBreedFilters from "./AnimalBreedFilters";
 import CustomPagination from "../../SharedElements/CustomPagination";
 
 const AnimalBreeds = () => {
-  const { error, clearError } = useFetch();
+  const { loading, error, clearError, sendRequest } = useFetch();
   const [animalBreeds, setAnimalBreeds] = useState([]);
+  const [choosableAnimalTypes, setChoosableAnimalTypes] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [numberOfPages, setNumberOfPages] = useState(0);
-  const [loadingFiltered, setLoadingFiltered] = useState(false);
+
+  const emptyFilters = {
+    name: "",
+    type: "",
+  };
+  const [filters, setFilters] = useState(emptyFilters);
+
+  useEffect(() => {
+    const fetchChoosableAnimalTypes = async () => {
+      const url = `${process.env.REACT_APP_BACKEND_URL}/api/enum/AnimalType`;
+      try {
+        const responseData = await sendRequest(false, url);
+        setChoosableAnimalTypes(responseData);
+        return;
+      } catch (err) {}
+    };
+    fetchChoosableAnimalTypes();
+  }, [sendRequest]);
+
+  useEffect(() => {
+    const getFilteredAnimalBreeds = async () => {
+      const url = `${process.env.REACT_APP_BACKEND_URL}/api/animalBreed/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${filters.name}&type=${filters.type}`;
+      try {
+        const responseData = await sendRequest(true, url);
+        setNumberOfPages(responseData.numberOfPages);
+        setAnimalBreeds(responseData.items);
+        return;
+      } catch (err) {}
+    };
+
+    getFilteredAnimalBreeds();
+  }, [filters, currentPage, pageSize, sendRequest]);
+
+  const handleFiltersChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    setCurrentPage(1);
+  };
 
   const handleChangeItemsPerPage = (event) => {
     setPageSize(parseInt(event.target.value, 10));
     setCurrentPage(1);
   };
-
-  const onFilterHandler = (filtered) => {
-    setAnimalBreeds(filtered);
-  };
-
-  // const onLoadingChangeHandler = useCallback((isLoading) => {
-  //   setLoadingFiltered(isLoading);
-  // }, []);
-
-  useEffect(() => {
-    console.log("parent: " + loadingFiltered);
-  }, [loadingFiltered]);
 
   return (
     <div>
@@ -44,18 +73,20 @@ const AnimalBreeds = () => {
           closed={clearError}
         />
       )}
-      {loadingFiltered ? (
+      {loading ? (
         <Loader />
       ) : (
         <>
           <AnimalBreedFilters
-            onFilter={onFilterHandler}
-            pageNumber={currentPage}
-            pageSize={pageSize}
-            setNumberOfPages={(num) => setNumberOfPages(num)}
-            onLoadingChange={(isLoading) => {
-              setLoadingFiltered(isLoading);
+            filters={filters}
+            handleFiltersChange={handleFiltersChange}
+            onFilter={(filtered) => {
+              setAnimalBreeds(filtered);
             }}
+            onClearFilters={() => {
+              setFilters(emptyFilters);
+            }}
+            choosableAnimalTypes={choosableAnimalTypes}
           />
 
           <CustomPagination
