@@ -47,29 +47,44 @@ const Shelters = () => {
   const emptyFilters = {
     name: "",
     contactPersonName: "",
-    isActive: true,
+    isActive: false,
   };
   const [filters, setFilters] = useState(emptyFilters);
 
-  useEffect(() => {
-    const getFilteredShelters = async () => {
-      const url = `${
-        process.env.REACT_APP_BACKEND_URL
-      }/api/shelter/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${
-        filters.name
-      }&contactPersonName=${filters.contactPersonName}&isActive=${
-        filters.isActive === true ? true : ""
-      }`;
-      try {
-        const responseData = await sendRequest(true, url);
-        setNumberOfPages(responseData.numberOfPages);
-        setShelters(responseData.items);
-        return;
-      } catch (err) {}
-    };
+  const getFilteredShelters = async () => {
+    const url = `${
+      process.env.REACT_APP_BACKEND_URL
+    }/api/shelter/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${
+      filters.name
+    }&contactPersonName=${filters.contactPersonName}&isActive=${
+      filters.isActive === true ? true : ""
+    }`;
+    try {
+      const responseData = await sendRequest(true, url);
+      setNumberOfPages(responseData.numberOfPages);
+      setShelters(responseData.items);
+      return;
+    } catch (err) {}
+  };
+  
+  const getDefaultShelters = async () => {
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/shelter/pageAndFilter`;
+    try {
+      const responseData = await sendRequest(true, url);
+      setNumberOfPages(responseData.numberOfPages);
+      setShelters(responseData.items);
+      return;
+    } catch (err) {}
+  };
 
-    getFilteredShelters();
-  }, [filters, currentPage, pageSize, sendRequest]);
+  useEffect(() => {
+    getDefaultShelters();
+  }, []);
+
+  const handleChangeItemsPerPage = (event) => {
+    setPageSize(parseInt(event.target.value, 10));
+    setCurrentPage(1);
+  };
 
   const handleFiltersChange = (e) => {
     const { name, value } = e.target;
@@ -86,9 +101,10 @@ const Shelters = () => {
       [e.target.name]: e.target.checked,
     });
 
-  const handleChangeItemsPerPage = (event) => {
-    setPageSize(parseInt(event.target.value, 10));
+  const onClearFilters = () => {
+    setFilters(emptyFilters);
     setCurrentPage(1);
+    getDefaultShelters();
   };
 
   const handleShelterUpdate = (shelter) => {
@@ -129,10 +145,11 @@ const Shelters = () => {
       ) : (
         <>
           <ShelterFilters
+            onFilter={getFilteredShelters}
             filters={filters}
             handleFiltersChange={handleFiltersChange}
             onCheckboxChange={onCheckboxChange}
-            onClearFilters={() => setFilters(emptyFilters)}
+            onClearFilters={onClearFilters}
           />
 
           <CustomPagination

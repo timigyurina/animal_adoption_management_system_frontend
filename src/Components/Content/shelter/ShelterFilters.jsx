@@ -12,6 +12,7 @@ import {
 
 const ShelterFilters = ({
   filters,
+  onFilter,
   handleFiltersChange,
   onCheckboxChange,
   onClearFilters,
@@ -49,6 +50,7 @@ const ShelterFilters = ({
             }}
           >
             <TextField
+              id="shelterName"
               label="Name"
               name="name"
               value={filters.name}
@@ -91,7 +93,14 @@ const ShelterFilters = ({
               width: "70%",
             }}
           >
-            <Button variant="outlined" color="error" onClick={onClearFilters}>
+            <Button variant="contained" color="ternary" onClick={onFilter}>
+              Search
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={onClearFilters}
+            >
               Clear all filters
             </Button>
           </Box>
