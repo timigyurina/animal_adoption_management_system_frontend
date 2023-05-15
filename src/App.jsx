@@ -11,14 +11,20 @@ import Login from "./Components/Content/shared/Login";
 import Shelters from "./Components/Content/shelter/Shelters";
 import AnimalBreeds from "./Components/Content/animalBreed/AnimalBreeds";
 import Donations from "./Components/Content/Donations";
-import Animals from "./Components/Content/Animals";
+import Animals from "./Components/Content/animal/Animals";
 import Images from "./Components/Content/image/Images";
 import AdoptionApplications from "./Components/Content/AdoptionApplications";
-import Users from "./Components/Content/Users";
+import Users from "./Components/Content/user/Users";
 import AdoptionContracts from "./Components/Content/AdoptionContracts";
-import MyProfile from "./Components/Content/user/MyProfile";
-import ManagedAdoptionContracts from "./Components/Content/user/ManagedAdoptionContracts";
-import ManagedShelter from "./Components/Content/user/ManagedShelter";
+import MyProfile from "./Components/Content/user/personalData/MyProfile";
+import MyDonations from "./Components/Content/user/personalData/MyDonations";
+import MyAdoptionApplications from "./Components/Content/user/personalData/MyAdoptionApplications";
+import MyAdoptionContracts from "./Components/Content/user/personalData/MyAdoptionContracts";
+import ManagedAdoptionContracts from "./Components/Content/user/employeeData/ManagedAdoptionContracts";
+import UploadedImages from "./Components/Content/user/employeeData/UploadedImages";
+import ManagedShelter from "./Components/Content/user/employeeData/ManagedShelter";
+import ShelterAnimals from "./Components/Content/shelter/shelterRelatedEntities/ShelterAnimals";
+import ShelterDonations from "./Components/Content/shelter/shelterRelatedEntities/ShelterDonations";
 import "./App.css";
 
 function App() {
@@ -35,12 +41,12 @@ function App() {
         <Route path="/adoptionContract" element={<AdoptionContracts />} />
 
         <Route path="/user/profile" element={<MyProfile />} />
-        <Route path="/user/donation" element={<Donations />} />
+        <Route path="/user/donation" element={<MyDonations />} />
         <Route
           path="/user/adoptionApplication"
-          element={<AdoptionApplications />}
+          element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
+        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
 
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
@@ -51,29 +57,21 @@ function App() {
     routes = (
       <>
         <Route path="/userShelter" element={<ManagedShelter />} />
-        <Route path="/userShelter/image" element={<Images />} />
-        <Route path="/userShelter/donation" element={<Donations />} />
-        <Route
-          path="/userShelter/adoptionApplication"
-          element={<AdoptionApplications />}
-        />
-        <Route
-          path="/userShelter/adoptionContract"
-          element={<AdoptionContracts />}
-        />
+        <Route path="/userShelter/animal" element={<ShelterAnimals />} />
+        <Route path="/userShelter/donation" element={<ShelterDonations />} />
         <Route
           path="/userShelter/user/managedAdoptionContract"
           element={<ManagedAdoptionContracts />}
         />
-        <Route path="/userShelter/user/image" element={<Images />} />
+        <Route path="/userShelter/user/image" element={<UploadedImages />} />
 
         <Route path="/user/profile" element={<MyProfile />} />
-        <Route path="/user/donation" element={<Donations />} />
+        <Route path="/user/donation" element={<MyDonations />} />
         <Route
           path="/user/adoptionApplication"
-          element={<AdoptionApplications />}
+          element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
+        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
 
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
@@ -84,12 +82,12 @@ function App() {
     routes = (
       <>
         <Route path="/user/profile" element={<MyProfile />} />
-        <Route path="/user/donation" element={<Donations />} />
+        <Route path="/user/donation" element={<MyDonations />} />
         <Route
           path="/user/adoptionApplication"
-          element={<AdoptionApplications />}
+          element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<AdoptionContracts />} />
+        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
 
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />

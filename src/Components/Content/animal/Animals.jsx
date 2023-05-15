@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useFetch } from "../../hooks/useFetch";
-import Loader from "../SharedElements/Loader";
+import { useFetch } from "../../../hooks/useFetch";
+import AnimalCard from "./AnimalCard";
+import Loader from "../../SharedElements/Loader";
 
 const Animals = () => {
   const [animals, setAnimals] = useState([]);
@@ -26,17 +27,12 @@ const Animals = () => {
         </div>
       )}
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : (
-        animals.map((s) => <Animal key={s.id} animal={s} />)
+        animals.map((s) => <AnimalCard key={s.id} animal={s} />)
       )}
     </div>
   );
 };
 
-const Animal = ({ animal }) => {
-  return <div>{animal.name}</div>;
-};
-
-
-export default Animals
+export default Animals;
