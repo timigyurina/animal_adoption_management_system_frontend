@@ -12,7 +12,7 @@ const AnimalBreedCard = ({ breed }) => {
   const auth = useContext(AuthContext);
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{padding:1, maxWidth: 345 }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {breed.name}

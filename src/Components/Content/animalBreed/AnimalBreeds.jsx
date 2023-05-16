@@ -1,27 +1,29 @@
 import { useState, useEffect } from "react";
 import { useFetch } from "../../../hooks/useFetch";
-import Loader from "../../SharedElements/Loader";
-import AnimalBreedCard from "./AnimalBreedCard";
 
-import { Box } from "@mui/material/";
-import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
-import AnimalBreedFilters from "./AnimalBreedFilters";
-import CustomPagination from "../../SharedElements/CustomPagination";
+import AnimalBreedCards from "./AnimalBreedCards";
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 const AnimalBreeds = () => {
-  const { loading, error, clearError, sendRequest } = useFetch();
-  const [animalBreeds, setAnimalBreeds] = useState([]);
+  const { loading, sendRequest } = useFetch();
   const [choosableAnimalTypes, setChoosableAnimalTypes] = useState([]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [numberOfPages, setNumberOfPages] = useState(0);
 
   const emptyFilters = {
     name: "",
     type: "",
   };
   const [filters, setFilters] = useState(emptyFilters);
+  const [filtersAreOpen, setFiltersAreOpen] = useState(true);
 
   useEffect(() => {
     const fetchChoosableAnimalTypes = async () => {
@@ -35,88 +37,108 @@ const AnimalBreeds = () => {
     fetchChoosableAnimalTypes();
   }, [sendRequest]);
 
-  useEffect(() => {
-    const getFilteredAnimalBreeds = async () => {
-      const url = `${process.env.REACT_APP_BACKEND_URL}/api/animalBreed/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${filters.name}&type=${filters.type}`;
-      try {
-        const responseData = await sendRequest(true, url);
-        setNumberOfPages(responseData.numberOfPages);
-        setAnimalBreeds(responseData.items);
-        return;
-      } catch (err) {}
-    };
-
-    getFilteredAnimalBreeds();
-  }, [filters, currentPage, pageSize, sendRequest]);
-
   const handleFiltersChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-    setCurrentPage(1);
-  };
-
-  const handleChangeItemsPerPage = (event) => {
-    setPageSize(parseInt(event.target.value, 10));
-    setCurrentPage(1);
   };
 
   return (
-    <div>
-      {error && (
-        <SnackbarWithMessage
-          message={error}
-          severity="error"
-          opened={error !== null}
-          closed={clearError}
-        />
-      )}
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <AnimalBreedFilters
-            filters={filters}
-            handleFiltersChange={handleFiltersChange}
-            onFilter={(filtered) => {
-              setAnimalBreeds(filtered);
-            }}
-            onClearFilters={() => {
-              setFilters(emptyFilters);
-            }}
-            choosableAnimalTypes={choosableAnimalTypes}
-          />
-
-          <CustomPagination
-            pageSize={pageSize}
-            currentPage={currentPage}
-            pageCount={numberOfPages}
-            onPageChange={(event, value) => {
-              setCurrentPage(value);
-            }}
-            onCountChange={handleChangeItemsPerPage}
-          />
+    <>
+      <Box sx={{ textAlign: "center", m: 2 }}>
+        <Button
+          variant="contained"
+          onClick={() => setFiltersAreOpen(!filtersAreOpen)}
+        >
+          {filtersAreOpen ? "Close filters" : "Open filters"}
+        </Button>
+      </Box>
+      {filtersAreOpen && (
+        <FormControl
+          sx={{ m: 1, display: "flex", alignItems: "center" }}
+          component="fieldset"
+          variant="standard"
+        >
+          <Typography variant="h5" sx={{ textAlign: "center" }}>
+            AnimalBreed filters
+          </Typography>
 
           <Box
             mt={2}
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "space-evenly",
+              justifyContent: "space-around",
               alignItems: "center",
-              gap: 2,
               width: "100%",
             }}
           >
-            {animalBreeds.map((b) => (
-              <AnimalBreedCard key={b.id} breed={b} />
-            ))}
+            <TextField
+              label="Name"
+              name="name"
+              value={filters.name}
+              onChange={handleFiltersChange}
+              variant="outlined"
+              placeholder="Search..."
+              size="small"
+            />
+
+            <FormControl
+              sx={{
+                m: 1,
+                minWidth: 200,
+              }}
+            >
+              {loading ? (
+                <CircularProgress />
+              ) : Object.entries(choosableAnimalTypes.values).length > 0 ? (
+                <>
+                  <InputLabel>AnimalType</InputLabel>
+                  <Select
+                    name="type"
+                    value={filters.type}
+                    onChange={handleFiltersChange}
+                  >
+                    <MenuItem value={""}>Select an AnimalType</MenuItem>
+                    {Object.entries(choosableAnimalTypes.values).map(
+                      ([name, value]) => (
+                        <MenuItem value={name} key={value}>
+                          {name}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </>
+              ) : (
+                "No AnimalTypes to choose from"
+              )}
+            </FormControl>
           </Box>
-        </>
+
+          <Box
+            mb={1}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-around",
+              width: "70%",
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="ternary"
+              onClick={() => setFilters(emptyFilters)}
+            >
+              Clear all filters
+            </Button>
+          </Box>
+        </FormControl>
       )}
-    </div>
+      <AnimalBreedCards filters={filters} />
+    </>
   );
 };
 
