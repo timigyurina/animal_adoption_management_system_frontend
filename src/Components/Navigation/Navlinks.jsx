@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../Authentication/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import Button from "@mui/material/Button";
 
 import "./Navigation.css";
@@ -14,15 +14,15 @@ const Navlinks = ({ isMobile }) => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/animal">Animals</NavLink>
-      </li>
-      <li>
         <NavLink to="/image">Images</NavLink>
       </li>
 
       {auth.isLoggedIn && (
         // auth.userRoles.some(r=> ["Administrator", "ShelterEmployee", "Adopter"].indexOf(r) >= 0) &&
         <>
+          <li>
+            <NavLink to="/animal">Animals</NavLink>
+          </li>
           <li>
             <NavLink to="/shelter">Shelters</NavLink>
           </li>
@@ -39,9 +39,14 @@ const Navlinks = ({ isMobile }) => {
           </Button>
         </li>
       ) : (
-        <li>
-          <NavLink to="/login"> LOGIN</NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink to="/login"> LOGIN</NavLink>
+          </li>
+          <li>
+            <NavLink to="/register"> Register</NavLink>
+          </li>
+        </>
       )}
     </ul>
   );

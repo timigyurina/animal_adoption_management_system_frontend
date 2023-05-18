@@ -1,23 +1,17 @@
 import { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
-import { AuthContext } from "../Authentication/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useTheme } from "@mui/material/styles";
-import ColorModeContext from "../../Theming/ColorModeContext";
+import ColorModeContext from "../../context/ColorModeContext";
 import MenuBase from "./MenuBase";
 import Navlinks from "./Navlinks";
 import PersonalNavlinks from "./PersonalNavlinks";
 import EmployeeNavlinks from "./EmployeeNavlinks";
 import AdminNavlinks from "./AdminNavlinks";
 
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import {AppBar, Box, Toolbar, IconButton, Menu, Container} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import PetsIcon from "@mui/icons-material/Pets";
 import PersonIcon from "@mui/icons-material/Person";
 import BadgeIcon from "@mui/icons-material/Badge";
@@ -43,25 +37,11 @@ const Navbar = () => {
     <AppBar position="static" color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Desktop view */}
-          <PetsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Adopt-US
-          </Typography>
+          {/* Icon for desktop view */}
+          <Box component={Link} to="/">
+            <PetsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          </Box>
+          {/* Menu with links and logo for mobile view */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -93,27 +73,20 @@ const Navbar = () => {
             >
               <Navlinks isMobile />
             </Menu>
+            <Box
+              component={Link}
+              to="/"
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <PetsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            </Box>
           </Box>
-          {/* Mobile view */}
-          <PetsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Adopt-US
-          </Typography>
+          {/* Links for desktop view */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Navlinks />
           </Box>
@@ -143,10 +116,7 @@ const Navbar = () => {
               <div className="logged-in-user">
                 Logged in as <span>{auth.userEmail}</span>
               </div>
-              <MenuBase
-                iconChild={<PersonIcon  />}
-                tooltipTitle="Personal menu"
-              >
+              <MenuBase iconChild={<PersonIcon />} tooltipTitle="Personal menu">
                 <PersonalNavlinks />
               </MenuBase>
             </>

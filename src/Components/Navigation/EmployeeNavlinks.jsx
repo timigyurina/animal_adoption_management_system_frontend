@@ -7,14 +7,14 @@ const EmployeeNavlinks = () => {
         <NavLink to="/userShelter">Shelter Info</NavLink>
       </li>
       <li>
-        <NavLink to="/userShelter/image">Images of Shelter</NavLink>
+        <NavLink to="/userShelter/animal">Animals of Shelter</NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to="/userShelter/adoptionApplication">Adoption Applications of Shelter</NavLink>
       </li>
       <li>
         <NavLink to="/userShelter/adoptionContract">Adoption Contracts of Shelter</NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink to="/userShelter/donation">Donations of Shelter</NavLink>
       </li>
