@@ -17,7 +17,7 @@ const AnimalBreedCards = ({ filters }) => {
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/animal/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${filters.name}&type=${filters.type}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/animalBreed/pageAndFilter?pagesize=${pageSize}&pageNumber=${currentPage}&name=${filters.name}&type=${filters.type}`;
     const getFilteredAnimals = async () => {
       try {
         const responseData = await sendRequest(true, url);

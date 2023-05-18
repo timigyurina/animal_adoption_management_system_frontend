@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useFetch } from "../../../hooks/useFetch";
+import { EnumContext } from "../../../context/EnumContext";
 
 import AnimalBreedCards from "./AnimalBreedCards";
 import {
@@ -15,8 +16,8 @@ import {
 } from "@mui/material";
 
 const AnimalBreeds = () => {
-  const { loading, sendRequest } = useFetch();
-  const [choosableAnimalTypes, setChoosableAnimalTypes] = useState([]);
+  const { loading } = useFetch();
+  const { animalType } = useContext(EnumContext).enums;
 
   const emptyFilters = {
     name: "",
@@ -24,18 +25,6 @@ const AnimalBreeds = () => {
   };
   const [filters, setFilters] = useState(emptyFilters);
   const [filtersAreOpen, setFiltersAreOpen] = useState(true);
-
-  useEffect(() => {
-    const fetchChoosableAnimalTypes = async () => {
-      const url = `${process.env.REACT_APP_BACKEND_URL}/api/enum/AnimalType`;
-      try {
-        const responseData = await sendRequest(false, url);
-        setChoosableAnimalTypes(responseData);
-        return;
-      } catch (err) {}
-    };
-    fetchChoosableAnimalTypes();
-  }, [sendRequest]);
 
   const handleFiltersChange = (e) => {
     const { name, value } = e.target;
@@ -62,17 +51,18 @@ const AnimalBreeds = () => {
           variant="standard"
         >
           <Typography variant="h5" sx={{ textAlign: "center" }}>
-            AnimalBreed filters
+            Breed filters
           </Typography>
 
           <Box
-            mt={2}
+            mt={1}
             sx={{
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "space-around",
               alignItems: "center",
               width: "100%",
+              gap: 1,
             }}
           >
             <TextField
@@ -93,24 +83,27 @@ const AnimalBreeds = () => {
             >
               {loading ? (
                 <CircularProgress />
-              ) : Object.entries(choosableAnimalTypes.values).length > 0 ? (
-                <>
-                  <InputLabel>AnimalType</InputLabel>
+              ) : Object.entries(animalType).length > 0 ? (
+                <FormControl
+                  sx={{
+                    m: 1,
+                    minWidth: 200,
+                  }}
+                >
+                  <InputLabel>Type</InputLabel>
                   <Select
                     name="type"
                     value={filters.type}
                     onChange={handleFiltersChange}
                   >
-                    <MenuItem value={""}>Select an AnimalType</MenuItem>
-                    {Object.entries(choosableAnimalTypes.values).map(
-                      ([name, value]) => (
-                        <MenuItem value={name} key={value}>
-                          {name}
-                        </MenuItem>
-                      )
-                    )}
+                    <MenuItem value={""}>Select a Type</MenuItem>
+                    {Object.entries(animalType).map(([name, value]) => (
+                      <MenuItem value={name} key={value}>
+                        {name}
+                      </MenuItem>
+                    ))}
                   </Select>
-                </>
+                </FormControl>
               ) : (
                 "No AnimalTypes to choose from"
               )}
