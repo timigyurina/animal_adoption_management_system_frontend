@@ -1,11 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navigation/Navbar";
+import EnumContextProvider from "../../context/EnumContextProvider";
 
 const Layout = () => {
   return (
     <>
-      <Navbar />
-      <Outlet />
+      <EnumContextProvider>
+        <Navbar />
+        <Outlet />
+      </EnumContextProvider>
     </>
   );
 };
