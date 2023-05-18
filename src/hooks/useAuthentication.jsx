@@ -95,10 +95,10 @@ export const useAuthentication = () => {
     const authStatus = await getAuthStatus();
     if (!authStatus) {
       const gotRefreshToken = await getRefreshToken();
-      if (!gotRefreshToken && isLoggedIn) {
-        logout();
+      if (!gotRefreshToken) {
+        if (isLoggedIn) logout();
+        return;
       }
-      return;
     }
     login();
   }, [getAuthStatus, getRefreshToken, login, logout, isLoggedIn]);

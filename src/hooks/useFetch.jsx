@@ -8,7 +8,14 @@ export const useFetch = () => {
   const { isAuthenticated } = useAuthentication();
 
   const sendRequest = useCallback(
-    async (needsAuth, url, method = "GET", body = null, headers = {},  credentials = "include") => {
+    async (
+      needsAuth,
+      url,
+      method = "GET",
+      body = null,
+      headers = {},
+      credentials = "include"
+    ) => {
       if (needsAuth) {
         await isAuthenticated();
       }
@@ -23,11 +30,15 @@ export const useFetch = () => {
         });
 
         const responseData = await response.json();
-        console.log(responseData);
+        if (!url.includes("/enum")) console.log(responseData);
 
         if (!response.ok) {
           console.log(response);
-          const message = responseData.message ? responseData.message : "Something went wrong, try again"
+          const message = responseData.message
+            ? responseData.message
+            : responseData.ErrorMessage
+            ? responseData.ErrorMessage
+            : "Something went wrong, try again";
           throw new Error(message);
         }
         setLoading(false);
