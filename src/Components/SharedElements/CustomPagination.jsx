@@ -12,9 +12,10 @@ import {
 const CustomPagination = ({
   currentPage,
   onPageChange,
+  onCountChange,
   pageCount,
   pageSize,
-  onCountChange,
+  totalCount,
 }) => {
   const containerStyles = {
     display: "flex",
@@ -28,7 +29,6 @@ const CustomPagination = ({
     fontSize: "1.1rem",
     fontWeight: "700",
   };
-
 
   return (
     <Stack spacing={2} sx={containerStyles}>
@@ -45,11 +45,7 @@ const CustomPagination = ({
           </Typography>
         </Grid>
         <Grid item xs={4}>
-          <FormControl
-            sx={{  minWidth: 80 }}
-            size="small"
-            color="ternary"
-          >
+          <FormControl sx={{ minWidth: 80 }} size="small" color="ternary">
             <InputLabel id="demo-select-small">Count</InputLabel>
             <Select
               labelId="demo-select-small"
@@ -66,8 +62,10 @@ const CustomPagination = ({
             </Select>
           </FormControl>
         </Grid>
+        <Typography marginTop={0} sx={{ fontSize: "0.8rem", fontWeight: 700 }}>
+          Total: {totalCount}
+        </Typography>
       </Grid>
-
       <Pagination
         count={pageCount}
         page={currentPage}

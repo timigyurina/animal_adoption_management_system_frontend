@@ -24,10 +24,10 @@ const getDesignTokens = (mode) => ({
     secondary: {
       ...(mode === "light"
         ? {
-            main: "#C4BA3B  ",
+            main: "#d8cc28",
             light: "#F4ED6E",
             dark: "#f4ed6e96",
-            contrastText: "#ec1f37",
+            contrastText: "#7c000e",
           }
         : {
             main: "#fff",
@@ -42,7 +42,7 @@ const getDesignTokens = (mode) => ({
             main: "#84b960  ",
             light: "#90a955",
             dark: "#3d7236",
-            contrastText: "#ec3123",
+            contrastText: "#7c000e",
           }
         : {
             main: "#e2dada",
