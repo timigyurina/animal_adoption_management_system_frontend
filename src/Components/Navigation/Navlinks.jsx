@@ -14,15 +14,15 @@ const Navlinks = ({ isMobile }) => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/animal">Animals</NavLink>
-      </li>
-      <li>
         <NavLink to="/image">Images</NavLink>
       </li>
 
       {auth.isLoggedIn && (
         // auth.userRoles.some(r=> ["Administrator", "ShelterEmployee", "Adopter"].indexOf(r) >= 0) &&
         <>
+          <li>
+            <NavLink to="/animal">Animals</NavLink>
+          </li>
           <li>
             <NavLink to="/shelter">Shelters</NavLink>
           </li>

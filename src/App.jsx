@@ -46,8 +46,12 @@ function App() {
           path="/user/adoptionApplication"
           element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
+        <Route
+          path="/user/adoptionContract"
+          element={<MyAdoptionContracts />}
+        />
 
+        <Route path="/animal" element={<Animals />} />
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="*" element={<Navigate replace to="/" />} />
@@ -71,8 +75,12 @@ function App() {
           path="/user/adoptionApplication"
           element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
+        <Route
+          path="/user/adoptionContract"
+          element={<MyAdoptionContracts />}
+        />
 
+        <Route path="/animal" element={<Animals />} />
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="*" element={<Navigate replace to="/" />} />
@@ -87,8 +95,12 @@ function App() {
           path="/user/adoptionApplication"
           element={<MyAdoptionApplications />}
         />
-        <Route path="/user/adoptionContract" element={<MyAdoptionContracts />} />
+        <Route
+          path="/user/adoptionContract"
+          element={<MyAdoptionContracts />}
+        />
 
+        <Route path="/animal" element={<Animals />} />
         <Route path="/shelter" element={<Shelters />} />
         <Route path="/animalBreed" element={<AnimalBreeds />} />
         <Route path="*" element={<Navigate replace to="/" />} />
@@ -124,7 +136,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<ContactInfo />} />
             <Route path="/image" element={<Images />} />
-            <Route path="/animal" element={<Animals />} />
             {routes}
           </Route>
         </Routes>
