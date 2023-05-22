@@ -18,7 +18,7 @@ const getDesignTokens = (mode) => ({
             main: "#fff",
             light: "#4d194d",
             dark: "#272640",
-            contrastText: "#f1cef1",
+            contrastText: "#bea2be",
           }),
     },
     secondary: {
@@ -45,7 +45,7 @@ const getDesignTokens = (mode) => ({
             contrastText: "#7c000e",
           }
         : {
-            main: "#e2dada",
+            main: "#703270",
             light: "#144552",
             dark: "#144552",
             contrastText: "#3c97b1",
@@ -80,7 +80,7 @@ const getDesignTokens = (mode) => ({
   },
 });
 
-export default function ToggleColorMode({ children }) {
+export default function ColorModeContextProvider({ children }) {
   const lightModeTheme = createTheme(getDesignTokens("light"));
   const darkModeTheme = createTheme(getDesignTokens("dark"));
   const [mode, setMode] = useState(lightModeTheme);
@@ -88,11 +88,13 @@ export default function ToggleColorMode({ children }) {
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) =>
-          prevMode === lightModeTheme ? darkModeTheme : lightModeTheme
+          mode.palette.primary.main === lightModeTheme.palette.primary.main
+            ? darkModeTheme
+            : lightModeTheme
         );
       },
     }),
-    [lightModeTheme, darkModeTheme]
+    [lightModeTheme, darkModeTheme, mode.palette.primary.main]
   );
 
   const Theme = useMemo(() => createTheme(mode), [mode]);
