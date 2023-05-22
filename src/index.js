@@ -2,16 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import ToggleColorMode from "./Components/SharedElements/ToggleColorMode";
-import "./index.css";
+import ColorModeContextProvider from "./Components/SharedElements/ColorModeContextProvider";
+import AuthContextProvider from "./context/AuthContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ToggleColorMode>
+    <ColorModeContextProvider>
       <BrowserRouter>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </BrowserRouter>
-    </ToggleColorMode>
+    </ColorModeContextProvider>
   </React.StrictMode>
 );
