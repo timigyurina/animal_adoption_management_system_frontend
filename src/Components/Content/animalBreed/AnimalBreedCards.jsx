@@ -75,7 +75,7 @@ const AnimalBreedCards = ({ filters }) => {
           }}
         >
           {animalBreeds.map((a) => (
-            <AnimalBreedCard key={a.id} breed={a} />
+            <AnimalBreedCard key={a.id} breed={a} editable />
           ))}
         </Box>
       )}
