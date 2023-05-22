@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { EnumContext } from "./EnumContext";
-import { CircularProgress } from "@mui/material";
+import Loader from "../Components/SharedElements/Loader";
 
 const EnumContextProvider = ({ children }) => {
   const { loading, sendRequest } = useFetch();
@@ -21,7 +21,7 @@ const EnumContextProvider = ({ children }) => {
   }, [sendRequest]);
 
   return loading || !enums.gender ? (
-    <CircularProgress />
+    <Loader />
   ) : (
     <EnumContext.Provider value={{ enums }}>{children}</EnumContext.Provider>
   );

@@ -217,18 +217,6 @@ const Animals = () => {
             </FormGroup>
           </Box>
 
-          {/* <Box
-            my={1}
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-          </Box> */}
-
           <Box
             my={1}
             sx={{
