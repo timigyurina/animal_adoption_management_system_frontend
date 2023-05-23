@@ -1,7 +1,15 @@
-import { Card, CardContent, Box, Typography } from "@mui/material";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import {
+  Card,
+  CardContent,
+  Box,
+  Typography,
+} from "@mui/material";
+import AnimalDetailsModal from "./detailsAndUpdates/AnimalDetailsModal";
 
 const cardBoxStyles = {
-  minWidth: "90%",
+  minWidth: "250px",
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
@@ -10,9 +18,10 @@ const cardBoxStyles = {
   gap: "1em",
 };
 
-const AnimalCard = ({ animal }) => {
+const AnimalCard = ({ animal, onAnimalWasUpdated }) => {
+  const auth = useContext(AuthContext);
   return (
-    <Card key={animal.id} >
+    <Card key={animal.id}>
       <CardContent>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -22,9 +31,23 @@ const AnimalCard = ({ animal }) => {
         </Box>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
-            Color
+            Status
           </Typography>
-          <Typography variant="body2">{animal.color}</Typography>
+          <Typography variant="body2">{animal.status}</Typography>
+        </Box>
+        <Box sx={cardBoxStyles}>
+          <Typography sx={{ mb: 1 }} color="text.secondary">
+            Breed
+          </Typography>
+          <Typography variant="body2">{animal.breed.name}</Typography>
+        </Box>
+        <Box sx={cardBoxStyles}>
+          <Typography sx={{ mb: 1 }} color="text.secondary">
+            Birthday
+          </Typography>
+          <Typography variant="body2">
+            {animal.birthDate.substring(0, 10)}
+          </Typography>
         </Box>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -45,38 +68,29 @@ const AnimalCard = ({ animal }) => {
             </Typography>
           </Box>
         )}
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Size
-          </Typography>
-          <Typography variant="body2">{animal.size}</Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Breed
-          </Typography>
-          <Typography variant="body2">{animal.breed.name}</Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Birthday
-          </Typography>
-          <Typography variant="body2">
-            {animal.birthDate.substring(0, 10)}
-          </Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Type
-          </Typography>
-          <Typography variant="body2">{animal.type}</Typography>
-        </Box>
-        {animal.notes && (
-          <Box sx={cardBoxStyles}>
-            <Typography sx={{ mb: 1 }} color="text.secondary">
-              Notes
-            </Typography>
-            <Typography variant="body2">{animal.notes}</Typography>
+
+        {auth.userRoles.includes("Administrator") && (
+          <Box
+            mt={1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <AnimalDetailsModal animalId={animal.id} onAnimalWasUpdated={onAnimalWasUpdated} adminMode/>
+          </Box>
+        )}
+        {(auth.userRoles.includes("ShelterEmployee") || auth.userRoles.includes("Adopter")) && (
+          <Box
+            mt={1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <AnimalDetailsModal animalId={animal.id} onAnimalWasUpdated={onAnimalWasUpdated}/>
           </Box>
         )}
       </CardContent>

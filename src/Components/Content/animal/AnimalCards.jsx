@@ -49,6 +49,22 @@ const Animals = ({ filters }) => {
     setCurrentPage(1);
   };
 
+  const refreshAnimal = async (animalId) => {
+    try {
+      const url = `${process.env.REACT_APP_BACKEND_URL}/api/animal/${animalId}`;
+      const refreshedAnimal = await sendRequest(true, url);
+      const newAnimals = animals.map(a => {
+        if (a.id === animalId) {
+          return refreshedAnimal;
+        } else {
+          return a
+        }
+      });
+      setAnimals(newAnimals);
+      return;
+    } catch (err) {}
+  };
+
   return (
     <>
       {error && (
@@ -88,7 +104,11 @@ const Animals = ({ filters }) => {
           }}
         >
           {animals.map((s) => (
-            <AnimalCard key={s.id} animal={s} />
+            <AnimalCard
+              key={s.id}
+              animal={s}
+              onAnimalWasUpdated={refreshAnimal}
+            />
           ))}
         </Box>
       )}
