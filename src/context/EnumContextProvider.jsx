@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { EnumContext } from "./EnumContext";
 import Loader from "../Components/SharedElements/Loader";
+import SnackbarWithMessage from "../Components/SharedElements/SnackbarWithMessage";
 
 const EnumContextProvider = ({ children }) => {
-  const { loading, sendRequest } = useFetch();
+  const { loading, sendRequest, error, clearError } = useFetch();
   const [enums, setEnums] = useState({});
 
   useEffect(() => {
@@ -20,8 +21,18 @@ const EnumContextProvider = ({ children }) => {
     fetchAllEnums();
   }, [sendRequest]);
 
-  return loading || !enums.gender ? (
+  return loading ? (
     <Loader />
+  ) : !enums.gender ? (
+    <>
+      <h3>Could not load application, please contact support</h3>
+      <SnackbarWithMessage
+        message={error}
+        severity="error"
+        opened={error !== null}
+        closed={clearError}
+      />
+    </>
   ) : (
     <EnumContext.Provider value={{ enums }}>{children}</EnumContext.Provider>
   );

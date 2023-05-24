@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import ColorModeContext from "../../context/ColorModeContext";
+import ColorModeContext from "./ColorModeContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 
