@@ -67,12 +67,12 @@ const AnimalDetailsAndUpdates = ({
         gap: 3,
       }}
     >
-      <Typography variant="h5" component="div">
+      <Typography variant="h4" component="h4">
         {animal.name}
       </Typography>
 
       {/* Basic info and updating */}
-      <Typography variant="h6" component="div">
+      <Typography variant="h5" component="h5">
         Basic info
         {adminMode && (
           <Button
@@ -144,7 +144,7 @@ const AnimalDetailsAndUpdates = ({
         }
       >
         <Box sx={centerStyle}>
-          <Typography variant="h6" component="h6">
+          <Typography variant="h5" component="h5">
             Breed details
           </Typography>
           <Button onClick={() => setBreedDetailsAreOpen(!breedDetailsAreOpen)}>
@@ -156,7 +156,7 @@ const AnimalDetailsAndUpdates = ({
 
       {/* Shelter info and updating */}
       <Box sx={centerStyle}>
-        <Typography variant="h6" component="div">
+        <Typography variant="h5" component="h5">
           Shelter details
         </Typography>
         <Button
@@ -213,7 +213,7 @@ const AnimalDetailsAndUpdates = ({
       {adminMode && animal.adoptionApplications.length > 0 && (
         <>
           <Box sx={centerStyle}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h5" component="h5">
               Applications' details
             </Typography>
             <Button
@@ -244,7 +244,7 @@ const AnimalDetailsAndUpdates = ({
       {adminMode && animal.adoptionContracts.length > 0 && (
         <>
           <Box sx={centerStyle}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h5" component="h5">
               Contracts' details
             </Typography>
             <Button
@@ -275,7 +275,7 @@ const AnimalDetailsAndUpdates = ({
       {animal.images.length > 0 && (
         <>
           <Box sx={centerStyle}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h5" component="h5">
               Images
             </Typography>
             <Button

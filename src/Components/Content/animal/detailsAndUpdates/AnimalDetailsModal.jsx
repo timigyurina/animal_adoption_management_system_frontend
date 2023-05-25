@@ -13,11 +13,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  minWidth: 650,
+  minWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid black",
   boxShadow: 24,
-  p: 4,
+  p: 2,
   height: "90vh",
   overflowY: "auto",
 };
@@ -45,7 +45,7 @@ const AnimalDetailsModal = ({ animalId, onAnimalWasUpdated, adminMode }) => {
               right: (style.p * 8) / 2,
             }}
           >
-            <HighlightOffIcon sx={{ color: "brown", fontSize: "2rem" }} />
+            <HighlightOffIcon sx={{ color: "ternary.dark", fontSize: "2rem" }} />
           </Button>
           <AnimalDetailsWrapper
             animalId={animalId}

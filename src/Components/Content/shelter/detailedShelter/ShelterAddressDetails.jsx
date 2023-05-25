@@ -26,7 +26,7 @@ const ShelterAddressDetails = ({ shelterAddress, cardBoxStyles }) => {
         </Box>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
-            Address
+            Location
           </Typography>
           <Typography variant="body2">
             {`${shelterAddress.addressLineOne} ${shelterAddress.addressLineTwo}`}
