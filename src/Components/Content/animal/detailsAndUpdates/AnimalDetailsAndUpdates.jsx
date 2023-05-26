@@ -6,7 +6,7 @@ import UpdateStatus from "./updateComponents/UpdateStatus.jsx";
 import UpdateSterilisation from "./updateComponents/UpdateSterilisation.jsx";
 import UpdateShelterConnection from "./updateComponents/UpdateShelterConnection.jsx";
 import AnimalShelter from "./detailComponents/AnimalShelter";
-import AnimalBasicInfo from"./detailComponents/AnimalBasicInfo"
+import AnimalBasicInfo from "./detailComponents/AnimalBasicInfo";
 import AdoptionApplicationCard from "../../adoptionApplication/AdoptionApplicationCard";
 import AdoptionContractCard from "../../adoptionContract/AdoptionContractCard";
 
@@ -36,6 +36,7 @@ const AnimalDetailsAndUpdates = ({
   animal,
   onAnimalWasUpdated,
   onMultiUpdate,
+  onShelterConnectionWasUpdated,
   adminMode,
 }) => {
   const [breedDetailsAreOpen, setBreedDetailsAreOpen] = useState(false);
@@ -93,7 +94,7 @@ const AnimalDetailsAndUpdates = ({
           cardBoxStyles={cardBoxStyles}
         />
       ) : (
-        <AnimalBasicInfo animal={animal} cardBoxStyles={cardBoxStyles}/>
+        <AnimalBasicInfo animal={animal} cardBoxStyles={cardBoxStyles} />
       )}
       {/* Updating status */}
       {adminMode && (
@@ -185,20 +186,26 @@ const AnimalDetailsAndUpdates = ({
                   )
                 }
               >
-                {updateShelterConnectionIsOpen ? "Close editing" : "Edit"}
+                {updateShelterConnectionIsOpen
+                  ? "Close"
+                  : "Update Shelter connection"}
               </Button>
-              {updateShelterConnectionIsOpen ? (
-                <UpdateShelterConnection />
-              ) : (
-                animal.animalShelters.map((as) => (
-                  <AnimalShelter
-                    key={as.id}
-                    shelter={as.shelter}
-                    enrollmentDate={as.enrollmentDate}
-                    exitDate={as.exitDate}
-                  />
-                ))
+              {updateShelterConnectionIsOpen && (
+                <UpdateShelterConnection
+                  animalId={animal.id}
+                  onUpdate={onShelterConnectionWasUpdated}
+                  onCancel={() => setUpdateShelterConnectionIsOpen(false)}
+                  boxStyles={cardBoxStyles}
+                />
               )}
+              {animal.animalShelters.map((as) => (
+                <AnimalShelter
+                  key={as.id}
+                  shelter={as.shelter}
+                  enrollmentDate={as.enrollmentDate}
+                  exitDate={as.exitDate}
+                />
+              ))}
             </>
           ) : (
             <AnimalShelter
@@ -264,7 +271,7 @@ const AnimalDetailsAndUpdates = ({
           {adoptionContractDetailsAreOpen &&
             animal.adoptionContracts.map((ac) => (
               <AdoptionContractCard
-              key={ac.id}
+                key={ac.id}
                 adoptionContract={ac}
                 cardBoxStyles={cardBoxStyles}
               />
@@ -299,6 +306,5 @@ const AnimalDetailsAndUpdates = ({
     </Box>
   );
 };
-
 
 export default AnimalDetailsAndUpdates;

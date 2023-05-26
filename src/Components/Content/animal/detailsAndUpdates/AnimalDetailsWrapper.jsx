@@ -50,6 +50,13 @@ const AnimalDetailsWrapper = ({
     setUpdateSuccess("Animal was successfully updated");
   };
 
+  const handleShelterConnectionUpdate = (newConnection) => {
+    const newAnimalShelters = [newConnection, ...animalDetails.animalShelters];
+    setAnimalDetails({ ...animalDetails, animalShelters: newAnimalShelters });
+    animalWasUpdated(true);
+    setUpdateSuccess("Animal was successfully updated");
+  };
+
   return (
     <>
       {error && (
@@ -76,6 +83,7 @@ const AnimalDetailsWrapper = ({
             animal={animalDetails}
             onAnimalWasUpdated={handleUpdate}
             onMultiUpdate={handleMultiUpdate}
+            onShelterConnectionWasUpdated={handleShelterConnectionUpdate}
             adminMode={adminMode}
           />
         )
