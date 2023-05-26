@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useFetch } from "../../../../../hooks/useFetch";
 import { EnumContext } from "../../../../../context/EnumContext";
 
@@ -9,22 +9,19 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import {
   TextField,
-  MenuItem,
-  FormControl,
-  FormHelperText,
   Typography,
-  Select,
   Box,
   Button,
   CircularProgress,
   Card,
   CardContent,
 } from "@mui/material";
+import SelectValues from "../../../../SharedElements/SelectValues";
+import BreedSelect from "../../../../SharedElements/BreedSelect";
 
 const UpdateBasicInfo = ({ animal, onUpdate, onCancel, cardBoxStyles }) => {
   const { sendRequest, loading, error, clearError } = useFetch();
   const enums = useContext(EnumContext).enums;
-  const [breeds, setBreeds] = useState([]);
 
   const [newValues, setNewValues] = useState({
     name: animal.name,
@@ -37,17 +34,13 @@ const UpdateBasicInfo = ({ animal, onUpdate, onCancel, cardBoxStyles }) => {
     notes: animal.notes,
   });
 
-  useEffect(() => {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/animalBreed/getAll`;
-    const getAllBreeds = async () => {
-      try {
-        const responseData = await sendRequest(true, url);
-        setBreeds(responseData);
-        return;
-      } catch (err) {}
-    };
-    getAllBreeds();
-  }, [sendRequest]);
+  const handleValueChange = (e) => {
+    const { name, value } = e.target;
+    setNewValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const updateAnimalInfo = async () => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/animal/${animal.id}`;
@@ -114,33 +107,11 @@ const UpdateBasicInfo = ({ animal, onUpdate, onCancel, cardBoxStyles }) => {
             <Typography sx={{ mb: 1 }} color="text.secondary">
               Breed
             </Typography>
-            {loading ? (
-              <CircularProgress />
-            ) : breeds.length > 0 ? (
-              <FormControl
-                sx={{
-                  m: 1,
-                  minWidth: 150,
-                }}
-              >
-                <Select
-                  name="breedId"
-                  size="small"
-                  value={newValues.breedId}
-                  onChange={(e) =>
-                    setNewValues({ ...newValues, breedId: e.target.value })
-                  }
-                >
-                  {breeds.map((b) => (
-                    <MenuItem value={b.id} key={b.id}>
-                      {b.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : (
-              "No Breeds to choose from"
-            )}
+            <BreedSelect
+              value={newValues.breedId}
+              onChange={handleValueChange}
+              small
+            />
           </Box>
 
           <Box sx={cardBoxStyles}>
@@ -149,36 +120,18 @@ const UpdateBasicInfo = ({ animal, onUpdate, onCancel, cardBoxStyles }) => {
             </Typography>
             {loading ? (
               <CircularProgress />
-            ) : Object.entries(enums.gender).length > 0 ? (
-              <FormControl
-                sx={{
-                  m: 0.5,
-                  minWidth: 100,
-                }}
-              >
-                <Select
-                  size="small"
-                  name="gender"
-                  value={newValues.gender}
-                  onChange={(e) =>
-                    setNewValues({ ...newValues, gender: e.target.value })
-                  }
-                  error={newValues.gender === ""}
-                >
-                  {Object.entries(enums.gender).map(([name, value]) => (
-                    <MenuItem value={name} key={value}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {newValues.gender === "" && (
-                  <FormHelperText error>Please select a gender</FormHelperText>
-                )}
-              </FormControl>
             ) : (
-              "No Gender to choose from"
+              <SelectValues
+                choosableItems={enums.gender}
+                value={newValues.gender}
+                onChange={handleValueChange}
+                label="Gender"
+                selectName="gender"
+                small
+              />
             )}
           </Box>
+
           {animal.isSterilised && (
             <Box sx={cardBoxStyles}>
               <Typography sx={{ mb: 1, ml: 2 }} color="text.secondary">
@@ -189,114 +142,61 @@ const UpdateBasicInfo = ({ animal, onUpdate, onCancel, cardBoxStyles }) => {
               </Typography>
             </Box>
           )}
+
           <Box sx={cardBoxStyles}>
             <Typography sx={{ mb: 1 }} color="text.secondary">
               Color
             </Typography>
             {loading ? (
               <CircularProgress />
-            ) : Object.entries(enums.animalColor).length > 0 ? (
-              <FormControl
-                sx={{
-                  m: 0.5,
-                  minWidth: 100,
-                }}
-              >
-                <Select
-                  size="small"
-                  name="color"
-                  value={newValues.color}
-                  onChange={(e) =>
-                    setNewValues({ ...newValues, color: e.target.value })
-                  }
-                  error={newValues.color === ""}
-                >
-                  {Object.entries(enums.animalColor).map(([name, value]) => (
-                    <MenuItem value={name} key={value}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {newValues.color === "" && (
-                  <FormHelperText error>Please select a color</FormHelperText>
-                )}
-              </FormControl>
             ) : (
-              "No Color to choose from"
+              <SelectValues
+                choosableItems={enums.animalColor}
+                value={newValues.color}
+                onChange={handleValueChange}
+                label="Color"
+                selectName="color"
+                small
+              />
             )}
           </Box>
+
           <Box sx={cardBoxStyles}>
             <Typography sx={{ mb: 1 }} color="text.secondary">
               Size
             </Typography>
             {loading ? (
               <CircularProgress />
-            ) : Object.entries(enums.animalSize).length > 0 ? (
-              <FormControl
-                sx={{
-                  m: 0.5,
-                  minWidth: 100,
-                }}
-              >
-                <Select
-                  size="small"
-                  name="size"
-                  value={newValues.size}
-                  onChange={(e) =>
-                    setNewValues({ ...newValues, size: e.target.value })
-                  }
-                  error={newValues.size === ""}
-                >
-                  {Object.entries(enums.animalSize).map(([name, value]) => (
-                    <MenuItem value={name} key={value}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {newValues.size === "" && (
-                  <FormHelperText error>Please select a size</FormHelperText>
-                )}
-              </FormControl>
             ) : (
-              "No Size to choose from"
+              <SelectValues
+                choosableItems={enums.animalSize}
+                value={newValues.size}
+                onChange={handleValueChange}
+                label="Size"
+                selectName="size"
+                small
+              />
             )}
           </Box>
+
           <Box sx={cardBoxStyles}>
             <Typography sx={{ mb: 1 }} color="text.secondary">
               Type
             </Typography>
             {loading ? (
               <CircularProgress />
-            ) : Object.entries(enums.animalType).length > 0 ? (
-              <FormControl
-                sx={{
-                  m: 0.5,
-                  minWidth: 100,
-                }}
-              >
-                <Select
-                  size="small"
-                  name="type"
-                  value={newValues.type}
-                  onChange={(e) =>
-                    setNewValues({ ...newValues, type: e.target.value })
-                  }
-                  error={newValues.type === ""}
-                >
-                  {Object.entries(enums.animalType).map(([name, value]) => (
-                    <MenuItem value={name} key={value}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {newValues.type === "" && (
-                  <FormHelperText error>Please select a type</FormHelperText>
-                )}
-              </FormControl>
             ) : (
-              "No Type to choose from"
+              <SelectValues
+                choosableItems={enums.animalType}
+                value={newValues.type}
+                onChange={handleValueChange}
+                label="Type"
+                selectName="type"
+                small
+              />
             )}
           </Box>
+
           <Box sx={cardBoxStyles}>
             <Typography sx={{ mb: 1 }} color="text.secondary">
               Notes
