@@ -6,7 +6,7 @@ import CustomPagination from "../../SharedElements/CustomPagination";
 import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 import { Box } from "@mui/material";
 
-const Animals = ({ filters }) => {
+const Animals = ({ filters, newAnimal }) => {
   const [animals, setAnimals] = useState([]);
   const { loading, error, sendRequest, clearError } = useFetch();
 
@@ -38,7 +38,7 @@ const Animals = ({ filters }) => {
       } catch (err) {}
     };
     getFilteredAnimals();
-  }, [filters, currentPage, pageSize, sendRequest]);
+  }, [filters, currentPage, pageSize, sendRequest, newAnimal]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -53,11 +53,11 @@ const Animals = ({ filters }) => {
     try {
       const url = `${process.env.REACT_APP_BACKEND_URL}/api/animal/${animalId}`;
       const refreshedAnimal = await sendRequest(true, url);
-      const newAnimals = animals.map(a => {
+      const newAnimals = animals.map((a) => {
         if (a.id === animalId) {
           return refreshedAnimal;
         } else {
-          return a
+          return a;
         }
       });
       setAnimals(newAnimals);

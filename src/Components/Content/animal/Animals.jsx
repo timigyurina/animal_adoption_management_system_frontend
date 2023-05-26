@@ -1,7 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useFetch } from "../../../hooks/useFetch";
 import { EnumContext } from "../../../context/EnumContext";
+import { AuthContext } from "../../../context/AuthContext";
+import CreateAnimalModal from "./creation/CreateAnimalModal";
 import AnimalCards from "./AnimalCards";
+import SelectValues from "../../SharedElements/SelectValues";
+import BreedSelect from "../../SharedElements/BreedSelect";
 
 import {
   Box,
@@ -24,11 +28,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
 const Animals = () => {
-  const { loading, sendRequest } = useFetch();
+  const { loading } = useFetch();
   const { animalColor, animalSize, animalStatus, animalType, gender } =
     useContext(EnumContext).enums;
+  const auth = useContext(AuthContext);
+  const [newAnimal, setNewAnimal] = useState(null);
 
-  const [breeds, setBreeds] = useState([]);
   const emptyFilters = {
     name: "",
     type: "",
@@ -43,18 +48,6 @@ const Animals = () => {
   };
   const [filters, setFilters] = useState(emptyFilters);
   const [filtersAreOpen, setFiltersAreOpen] = useState(true);
-
-  useEffect(() => {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/animalBreed/getAll`;
-    const getAllBreeds = async () => {
-      try {
-        const responseData = await sendRequest(true, url);
-        setBreeds(responseData);
-        return;
-      } catch (err) {}
-    };
-    getAllBreeds();
-  }, []);
 
   const handleFiltersChange = (e) => {
     const { name, value } = e.target;
@@ -72,6 +65,13 @@ const Animals = () => {
 
   return (
     <>
+      {(auth.userRoles.includes("Administrator") ||
+        auth.userRoles.includes("ShelterEmployee")) && (
+        <CreateAnimalModal
+          onAnimalWasCreated={(createdAnimal) => setNewAnimal(createdAnimal)}
+        />
+      )}
+
       <Box sx={{ textAlign: "center", m: 2 }}>
         <Button
           variant="contained"
@@ -110,6 +110,7 @@ const Animals = () => {
                   m: 1,
                   minWidth: 200,
                 }}
+                size="small"
               >
                 <InputLabel>Type</InputLabel>
                 <Select
@@ -138,6 +139,8 @@ const Animals = () => {
                 onChange={handleFiltersChange}
                 label="Size"
                 selectName="size"
+                small
+                withDefault
               />
             )}
 
@@ -150,6 +153,8 @@ const Animals = () => {
                 onChange={handleFiltersChange}
                 label="Color"
                 selectName="color"
+                small
+                withDefault
               />
             )}
 
@@ -162,6 +167,8 @@ const Animals = () => {
                 onChange={handleFiltersChange}
                 label="Gender"
                 selectName="gender"
+                small
+                withDefault
               />
             )}
 
@@ -174,35 +181,18 @@ const Animals = () => {
                 onChange={handleFiltersChange}
                 label="Status"
                 selectName="status"
+                small
+                withDefault
               />
             )}
 
-            {loading ? (
-              <CircularProgress />
-            ) : breeds ? (
-              <FormControl
-                sx={{
-                  m: 1,
-                  minWidth: 200,
-                }}
-              >
-                <InputLabel>Breed</InputLabel>
-                <Select
-                  name="breedId"
-                  value={filters.breedId}
-                  onChange={handleFiltersChange}
-                >
-                  <MenuItem value={""}>Select a Breed</MenuItem>
-                  {breeds.map((b) => (
-                    <MenuItem value={b.id} key={b.id}>
-                      {b.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : (
-              "No Breeds to choose from"
-            )}
+            <BreedSelect
+              value={filters.breedId}
+              onChange={handleFiltersChange}
+              small
+              withDefault
+            />
+
             <FormGroup>
               <FormControlLabel
                 control={
@@ -287,40 +277,7 @@ const Animals = () => {
         </FormControl>
       )}
 
-      <AnimalCards filters={filters} />
-    </>
-  );
-};
-
-const SelectValues = ({
-  choosableItems,
-  value,
-  onChange,
-  label,
-  selectName,
-}) => {
-  return (
-    <>
-      {Object.entries(choosableItems).length > 0 ? (
-        <FormControl
-          sx={{
-            m: 1,
-            minWidth: 200,
-          }}
-        >
-          <InputLabel>{label}</InputLabel>
-          <Select name={selectName} value={value} onChange={onChange}>
-            <MenuItem value={""}>Select a(n) {label}</MenuItem>
-            {Object.entries(choosableItems).map(([name, value]) => (
-              <MenuItem value={name} key={value}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : (
-        `No ${label} to choose from`
-      )}
+      <AnimalCards filters={filters} newAnimal={newAnimal} />
     </>
   );
 };
