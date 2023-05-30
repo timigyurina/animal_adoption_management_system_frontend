@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import UpdateShelterContactInfoForm from "./UpdateShelterContactInfoForm";
-import  ShelterDetails from "./ShelterDetails";
+import ShelterDetails from "./ShelterDetails";
 
 import { Modal, Button, Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -34,20 +34,14 @@ const ShelterDetailsModal = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [detailsAreShown, setDetailsAreShown] = useState(false);
+  const [updatedShelter, setUpdatedShelter] = useState(null);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleShelterPaymentUpdate = async (paymentMethod) => {
-    const response = await fetch(`/api/Shelter/status/${shelter.id}`, {
-      method: "PUT",
-      body: JSON.stringify({ paymentMethod: paymentMethod }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const responseData = await response.json();
-
-    onShelterWasUpdated(responseData);
+  const handleClose = () => {
+    updatedShelter && onShelterWasUpdated(updatedShelter);
+    setOpen(false);
   };
+
 
   return (
     <>
@@ -66,8 +60,9 @@ const ShelterDetailsModal = ({
 
           {updateContactInfoMode && (
             <UpdateShelterContactInfoForm
+              shelter={shelter}
               onCancel={handleClose}
-              onSave={handleShelterPaymentUpdate}
+              onUpdate={(s) => setUpdatedShelter(s)}
             />
           )}
 

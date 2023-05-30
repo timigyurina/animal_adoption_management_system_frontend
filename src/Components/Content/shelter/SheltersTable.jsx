@@ -193,7 +193,7 @@ const SheltersTable = ({ filters }) => {
                         <ShelterDetailsModal
                           shelter={shelter}
                           updateContactInfoMode
-                          // onShelterWasUpdated={handleShelterUpdate} 
+                          onShelterWasUpdated={handleShelterUpdate} 
                         />
                       </StyledTableCell>
                     )}
