@@ -1,12 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Box, Typography } from "@mui/material";
 import AnimalDetailsModal from "./detailsAndUpdates/AnimalDetailsModal";
+import ImageUploadModal from "../image/creation/ImageUploadModal";
+import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 
 const cardBoxStyles = {
   minWidth: "250px",
@@ -18,8 +15,16 @@ const cardBoxStyles = {
   gap: "1em",
 };
 
-const AnimalCard = ({ animal, onAnimalWasUpdated }) => {
+// This component is used in both AnimalCards and ShelterAnimals
+
+const AnimalCard = ({
+  animal,
+  onAnimalWasUpdated,
+  imageUploadMode,
+  updateMode,
+}) => {
   const auth = useContext(AuthContext);
+  const [imageHasBeenAdded, setImageHasBeenAdded] = useState(null);
   return (
     <Card key={animal.id}>
       <CardContent>
@@ -69,7 +74,7 @@ const AnimalCard = ({ animal, onAnimalWasUpdated }) => {
           </Box>
         )}
 
-        {auth.userRoles.includes("Administrator") && (
+        {auth.isLoggedIn && (
           <Box
             mt={1}
             sx={{
@@ -78,20 +83,41 @@ const AnimalCard = ({ animal, onAnimalWasUpdated }) => {
               alignItems: "center",
             }}
           >
-            <AnimalDetailsModal animalId={animal.id} onAnimalWasUpdated={onAnimalWasUpdated} adminMode/>
+            <AnimalDetailsModal
+              animalId={animal.id}
+              onAnimalWasUpdated={onAnimalWasUpdated}
+              adminMode={auth.userRoles.includes("Administrator") || updateMode}
+            />
           </Box>
         )}
-        {(auth.userRoles.includes("ShelterEmployee") || auth.userRoles.includes("Adopter")) && (
+
+        {/* Admins can always access image uploading, employees can only do this if imageUploadMode is enabled */}
+        {((imageUploadMode && auth.userRoles.includes("ShelterEmployee")) ||
+          auth.userRoles.includes("Administrator")) && (
           <Box
-            mt={1}
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <AnimalDetailsModal animalId={animal.id} onAnimalWasUpdated={onAnimalWasUpdated}/>
+            <ImageUploadModal
+              animalId={animal.id}
+              onImageWasUploaded={(image) =>
+                setImageHasBeenAdded(
+                  `New Image for ${image.animal.name} has been added`
+                )
+              }
+            />
           </Box>
+        )}
+        {imageHasBeenAdded && (
+          <SnackbarWithMessage
+            message={imageHasBeenAdded}
+            severity="success"
+            opened={imageHasBeenAdded !== null}
+            closed={() => setImageHasBeenAdded(false)}
+          />
         )}
       </CardContent>
     </Card>
