@@ -1,6 +1,5 @@
 import { useState } from "react";
 import AnimalBreedCard from "../../animalBreed/AnimalBreedCard";
-import ImageCards from "../../image/ImageCards";
 import UpdateBasicInfo from "./updateComponents/UpdateBasicInfo.jsx";
 import UpdateStatus from "./updateComponents/UpdateStatus.jsx";
 import UpdateSterilisation from "./updateComponents/UpdateSterilisation.jsx";
@@ -9,6 +8,7 @@ import AnimalShelter from "./detailComponents/AnimalShelter";
 import AnimalBasicInfo from "./detailComponents/AnimalBasicInfo";
 import AdoptionApplicationCard from "../../adoptionApplication/AdoptionApplicationCard";
 import AdoptionContractCard from "../../adoptionContract/AdoptionContractCard";
+import ImageCard from "../../image/ImageCard";
 
 import { Typography, Box, Button } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -295,12 +295,9 @@ const AnimalDetailsAndUpdates = ({
               )}
             </Button>
           </Box>
-          {imageDetailsAreOpen && (
-            <ImageCards
-              images={animal.images}
-              // cardBoxStyles={cardBoxStyles}
-            />
-          )}
+
+          {imageDetailsAreOpen &&
+            animal.images.map((i) => <ImageCard key={i.id} image={i} />)}
         </>
       )}
     </Box>

@@ -6,7 +6,7 @@ import CustomPagination from "../../SharedElements/CustomPagination";
 import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 import { Box } from "@mui/material";
 
-const Animals = ({ filters, newAnimal }) => {
+const AnimalCards = ({ filters, newAnimal }) => {
   const [animals, setAnimals] = useState([]);
   const { loading, error, sendRequest, clearError } = useFetch();
 
@@ -116,4 +116,4 @@ const Animals = ({ filters, newAnimal }) => {
   );
 };
 
-export default Animals;
+export default AnimalCards;

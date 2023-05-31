@@ -43,8 +43,8 @@ const Animals = () => {
     color: "",
     breedId: "",
     isSterilised: false,
-    bornAfter: "",
-    bornBefore: "",
+    bornAfter: null,
+    bornBefore: null,
   };
   const [filters, setFilters] = useState(emptyFilters);
   const [filtersAreOpen, setFiltersAreOpen] = useState(true);
@@ -247,8 +247,8 @@ const Animals = () => {
                 }
                 slotProps={{ textField: { variant: "outlined" } }}
               />
-              {filters.bornAfter !== "" &&
-                filters.bornBefore !== "" &&
+              {filters.bornAfter !== null &&
+                filters.bornBefore !== null &&
                 filters.bornAfter > filters.bornBefore && (
                   <FormHelperText error>
                     Born before date cannot be earlier than born after
