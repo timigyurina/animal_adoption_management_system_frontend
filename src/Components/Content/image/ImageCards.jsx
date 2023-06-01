@@ -5,7 +5,8 @@ import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 import CustomPagination from "../../SharedElements/CustomPagination";
 import Loader from "../../SharedElements/Loader";
 
-import { ImageListItem, ImageListItemBar, Box } from "@mui/material";
+import { Box } from "@mui/material";
+import ImageCard from "./ImageCard";
 
 const ImageCards = ({ filters }) => {
   const [images, setImages] = useState([]);
@@ -87,20 +88,11 @@ const ImageCards = ({ filters }) => {
           }}
         >
           {images.map((item) => (
-            <ImageListItem key={item.id} sx={{ maxWidth: "300px" }}>
-              <img
-                src={`${process.env.REACT_APP_BACKEND_URL}/${item.imagePath}`}
-                alt={item.description}
-                loading="lazy"
-              />
-              <ImageListItemBar
-                title={`${item.animal.name} - ${item.dateTaken.substring(
-                  0,
-                  10
-                )}`}
-                position="below"
-              />
-            </ImageListItem>
+            <ImageCard
+              key={item.id}
+              image={item}
+              imageTitle={item.animal.name}
+            />
           ))}
         </Box>
       )}

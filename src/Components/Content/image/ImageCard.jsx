@@ -10,7 +10,7 @@ const ImageCard = ({ image, imageTitle }) => {
       />
       <CardContent>
         {imageTitle && (
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h6" component="h6">
             {imageTitle}
           </Typography>
         )}
