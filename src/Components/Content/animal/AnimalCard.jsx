@@ -1,7 +1,12 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 import { Card, CardContent, Box, Typography } from "@mui/material";
+import AnimalDetailsModal from "./detailsAndUpdates/AnimalDetailsModal";
+import ImageUploadModal from "../image/creation/ImageUploadModal";
+import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 
 const cardBoxStyles = {
-  minWidth: "90%",
+  minWidth: "250px",
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
@@ -10,9 +15,18 @@ const cardBoxStyles = {
   gap: "1em",
 };
 
-const AnimalCard = ({ animal }) => {
+// This component is used in both AnimalCards and ShelterAnimals
+
+const AnimalCard = ({
+  animal,
+  onAnimalWasUpdated,
+  imageUploadMode,
+  updateMode,
+}) => {
+  const auth = useContext(AuthContext);
+  const [imageHasBeenAdded, setImageHasBeenAdded] = useState(null);
   return (
-    <Card key={animal.id} >
+    <Card key={animal.id}>
       <CardContent>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -22,9 +36,23 @@ const AnimalCard = ({ animal }) => {
         </Box>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
-            Color
+            Status
           </Typography>
-          <Typography variant="body2">{animal.color}</Typography>
+          <Typography variant="body2">{animal.status}</Typography>
+        </Box>
+        <Box sx={cardBoxStyles}>
+          <Typography sx={{ mb: 1 }} color="text.secondary">
+            Breed
+          </Typography>
+          <Typography variant="body2">{animal.breed.name}</Typography>
+        </Box>
+        <Box sx={cardBoxStyles}>
+          <Typography sx={{ mb: 1 }} color="text.secondary">
+            Birthday
+          </Typography>
+          <Typography variant="body2">
+            {animal.birthDate.substring(0, 10)}
+          </Typography>
         </Box>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -45,39 +73,51 @@ const AnimalCard = ({ animal }) => {
             </Typography>
           </Box>
         )}
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Size
-          </Typography>
-          <Typography variant="body2">{animal.size}</Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Breed
-          </Typography>
-          <Typography variant="body2">{animal.breed.name}</Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Birthday
-          </Typography>
-          <Typography variant="body2">
-            {animal.birthDate.substring(0, 10)}
-          </Typography>
-        </Box>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Type
-          </Typography>
-          <Typography variant="body2">{animal.type}</Typography>
-        </Box>
-        {animal.notes && (
-          <Box sx={cardBoxStyles}>
-            <Typography sx={{ mb: 1 }} color="text.secondary">
-              Notes
-            </Typography>
-            <Typography variant="body2">{animal.notes}</Typography>
+
+        {auth.isLoggedIn && (
+          <Box
+            mt={1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <AnimalDetailsModal
+              animalId={animal.id}
+              onAnimalWasUpdated={onAnimalWasUpdated}
+              adminMode={auth.userRoles.includes("Administrator") || updateMode}
+            />
           </Box>
+        )}
+
+        {/* Admins can always access image uploading, employees can only do this if imageUploadMode is enabled */}
+        {((imageUploadMode && auth.userRoles.includes("ShelterEmployee")) ||
+          auth.userRoles.includes("Administrator")) && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ImageUploadModal
+              animalId={animal.id}
+              onImageWasUploaded={(image) =>
+                setImageHasBeenAdded(
+                  `New Image for ${image.animal.name} has been added`
+                )
+              }
+            />
+          </Box>
+        )}
+        {imageHasBeenAdded && (
+          <SnackbarWithMessage
+            message={imageHasBeenAdded}
+            severity="success"
+            opened={imageHasBeenAdded !== null}
+            closed={() => setImageHasBeenAdded(false)}
+          />
         )}
       </CardContent>
     </Card>

@@ -30,7 +30,7 @@ export const useFetch = () => {
         });
 
         const responseData = await response.json();
-        if (!url.includes("/enum")) console.log(responseData);
+        if (!(url.includes("/enum") || url.includes("/animalBreed"))) console.log(responseData);
 
         if (!response.ok) {
           console.log(response);

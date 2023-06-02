@@ -4,12 +4,13 @@ import ShelterAddressDetails from "./detailedShelter/ShelterAddressDetails";
 import ShelterDonationsDetails from "./detailedShelter/ShelterDonationsDetails";
 import ShelterEmployeesDetails from "./detailedShelter/ShelterEmployeesDetails";
 
-import {  Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useFetch } from "../../../hooks/useFetch";
 import LoadingSpinner from "../../SharedElements/LoadingSpinner";
 import "../../SharedElements/LoadingSpinner.css";
+import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 
 const cardBoxStyles = {
   minWidth: "90%",
@@ -28,9 +29,10 @@ const centerStyle = {
   gap: "1em",
 };
 
-const ShelterDetails = ({ shelterId }) => {
-  const { loading, error, sendRequest, } =
-    useFetch();
+// This component is used in both ManagedShelter and ShelterDetailsModal. ManagedShelter uses the shelter prop, ShelterDetailsModal uses shelterId.
+
+const ShelterDetails = ({ shelterId, shelter }) => {
+  const { loading, error, clearError, sendRequest } = useFetch();
   const [shelterDetails, setShelterDetails] = useState(null);
   const [addressDetailsAreOpen, setAddressDetailsAreOpen] = useState(false);
   const [animalsDetailsAreOpen, setAnimalsDetailsAreOpen] = useState(false);
@@ -46,18 +48,161 @@ const ShelterDetails = ({ shelterId }) => {
         return;
       } catch (err) {}
     };
-    fetchShelterDetails();
+
+    if (shelterId) fetchShelterDetails();
   }, [sendRequest, shelterId]);
 
-  return (
-    <>
-      {error && (
-        error
-      )}
-      {loading ? (
-        <LoadingSpinner asoverLay />
-      ) : (
-        shelterDetails && (
+  if (shelterId) {
+    return (
+      <>
+        {error && (
+          <SnackbarWithMessage
+            message={error}
+            severity="error"
+            opened={error !== null}
+            closed={clearError}
+          />
+        )}
+        {loading ? (
+          <LoadingSpinner asoverLay />
+        ) : (
+          shelterDetails && (
+            <Box
+              sx={{
+                minWidth: 500,
+                m: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "1em",
+              }}
+            >
+              <Typography variant="h5" component="div">
+                Details of {shelterDetails.name}
+              </Typography>
+              <Typography variant="body2" component="div">
+                Email: {shelterDetails.email}
+              </Typography>
+              <Typography variant="body2" component="div">
+                Phone: {shelterDetails.phone}
+              </Typography>
+              <Box
+                sx={
+                  (centerStyle,
+                  {
+                    width: "80%",
+                  })
+                }
+              >
+                <Box sx={centerStyle}>
+                  <Typography variant="h6" component="h6">
+                    Address details
+                  </Typography>
+                  <Button
+                    onClick={() =>
+                      setAddressDetailsAreOpen(!addressDetailsAreOpen)
+                    }
+                  >
+                    {addressDetailsAreOpen ? (
+                      <ArrowDropUpIcon />
+                    ) : (
+                      <ArrowDropDownIcon />
+                    )}
+                  </Button>
+                </Box>
+                {addressDetailsAreOpen && (
+                  <ShelterAddressDetails
+                    shelterAddress={shelterDetails.address}
+                    cardBoxStyles={cardBoxStyles}
+                  />
+                )}
+              </Box>
+
+              <Box sx={centerStyle}>
+                <Typography variant="h6" component="div">
+                  Animals' details
+                </Typography>
+                <Button
+                  onClick={() =>
+                    setAnimalsDetailsAreOpen(!animalsDetailsAreOpen)
+                  }
+                >
+                  {animalsDetailsAreOpen ? (
+                    <ArrowDropUpIcon />
+                  ) : (
+                    <ArrowDropDownIcon />
+                  )}
+                </Button>
+              </Box>
+              {animalsDetailsAreOpen && (
+                <ShelterAnimalsDetails
+                  shelterAnimals={shelterDetails.animals}
+                  cardBoxStyles={cardBoxStyles}
+                />
+              )}
+
+              {shelterDetails.donations.length > 0 && (
+                <>
+                  <Box sx={centerStyle}>
+                    <Typography variant="h6" component="div">
+                      Donations' details
+                    </Typography>
+                    <Button
+                      onClick={() =>
+                        setDonationsDetailsAreOpen(!donationsDetailsAreOpen)
+                      }
+                    >
+                      {donationsDetailsAreOpen ? (
+                        <ArrowDropUpIcon />
+                      ) : (
+                        <ArrowDropDownIcon />
+                      )}
+                    </Button>
+                  </Box>
+                  {donationsDetailsAreOpen && (
+                    <ShelterDonationsDetails
+                      shelterDonations={shelterDetails.donations}
+                      cardBoxStyles={cardBoxStyles}
+                    />
+                  )}
+                </>
+              )}
+
+              {shelterDetails.employees.length > 0 && (
+                <>
+                  <Box sx={centerStyle}>
+                    <Typography variant="h6" component="div">
+                      Employees' details
+                    </Typography>
+                    <Button
+                      onClick={() =>
+                        setEmployeesDetailsAreOpen(!employeesDetailsAreOpen)
+                      }
+                    >
+                      {employeesDetailsAreOpen ? (
+                        <ArrowDropUpIcon />
+                      ) : (
+                        <ArrowDropDownIcon />
+                      )}
+                    </Button>
+                  </Box>
+                  {employeesDetailsAreOpen && (
+                    <ShelterEmployeesDetails
+                      shelterEmployees={shelterDetails.employees}
+                      cardBoxStyles={cardBoxStyles}
+                    />
+                  )}
+                </>
+              )}
+            </Box>
+          )
+        )}
+      </>
+    );
+  } else if (shelter) {
+    return (
+      <>
+        {shelter && (
           <Box
             sx={{
               minWidth: 500,
@@ -69,9 +214,14 @@ const ShelterDetails = ({ shelterId }) => {
             }}
           >
             <Typography variant="h5" component="div">
-              Details of {shelterDetails.name}
+              Details of {shelter.name}
             </Typography>
-
+            <Typography variant="body2" component="div">
+              Email: {shelter.email}
+            </Typography>
+            <Typography variant="body2" component="div">
+              Phone: {shelter.phone}
+            </Typography>
             <Box
               sx={
                 (centerStyle,
@@ -98,7 +248,7 @@ const ShelterDetails = ({ shelterId }) => {
               </Box>
               {addressDetailsAreOpen && (
                 <ShelterAddressDetails
-                  shelterAddress={shelterDetails.address}
+                  shelterAddress={shelter.address}
                   cardBoxStyles={cardBoxStyles}
                 />
               )}
@@ -120,12 +270,12 @@ const ShelterDetails = ({ shelterId }) => {
             </Box>
             {animalsDetailsAreOpen && (
               <ShelterAnimalsDetails
-                shelterAnimals={shelterDetails.animals}
+                shelterAnimals={shelter.animals}
                 cardBoxStyles={cardBoxStyles}
               />
             )}
 
-            {shelterDetails.donations.length > 0 && (
+            {shelter.donations.length > 0 && (
               <>
                 <Box sx={centerStyle}>
                   <Typography variant="h6" component="div">
@@ -145,14 +295,14 @@ const ShelterDetails = ({ shelterId }) => {
                 </Box>
                 {donationsDetailsAreOpen && (
                   <ShelterDonationsDetails
-                    shelterDonations={shelterDetails.donations}
+                    shelterDonations={shelter.donations}
                     cardBoxStyles={cardBoxStyles}
                   />
                 )}
               </>
             )}
 
-            {shelterDetails.employees.length > 0 && (
+            {shelter.employees.length > 0 && (
               <>
                 <Box sx={centerStyle}>
                   <Typography variant="h6" component="div">
@@ -172,17 +322,17 @@ const ShelterDetails = ({ shelterId }) => {
                 </Box>
                 {employeesDetailsAreOpen && (
                   <ShelterEmployeesDetails
-                    shelterEmployees={shelterDetails.employees}
+                    shelterEmployees={shelter.employees}
                     cardBoxStyles={cardBoxStyles}
                   />
                 )}
               </>
             )}
           </Box>
-        )
-      )}
-    </>
-  );
+        )}
+      </>
+    );
+  }
 };
 
 export default ShelterDetails;

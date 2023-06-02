@@ -183,7 +183,7 @@ const SheltersTable = ({ filters }) => {
                     ) : (
                       auth.userRoles.includes("ShelterEmployee") && (
                         <StyledTableCell align="center">
-                          {shelter.isActive}
+                          {shelter.isActive ? "Active" : "Inactive"}
                         </StyledTableCell>
                       )
                     )}
@@ -193,7 +193,7 @@ const SheltersTable = ({ filters }) => {
                         <ShelterDetailsModal
                           shelter={shelter}
                           updateContactInfoMode
-                          // onShelterWasUpdated={handleShelterUpdate} //   KEZDENI VAALMIET
+                          onShelterWasUpdated={handleShelterUpdate} 
                         />
                       </StyledTableCell>
                     )}

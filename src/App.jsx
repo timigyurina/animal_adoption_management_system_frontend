@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import { useAuthentication } from "./hooks/useAuthentication";
 
 import Home from "./Components/Content/shared/Home";
 import Layout from "./Components/SharedElements/Layout";
@@ -10,12 +9,12 @@ import Register from "./Components/Content/shared/Register";
 import Login from "./Components/Content/shared/Login";
 import Shelters from "./Components/Content/shelter/Shelters";
 import AnimalBreeds from "./Components/Content/animalBreed/AnimalBreeds";
-import Donations from "./Components/Content/Donations";
+import Donations from "./Components/Content/donation/Donations";
 import Animals from "./Components/Content/animal/Animals";
 import Images from "./Components/Content/image/Images";
-import AdoptionApplications from "./Components/Content/AdoptionApplications";
+import AdoptionApplications from "./Components/Content/adoptionApplication/AdoptionApplications";
 import Users from "./Components/Content/user/Users";
-import AdoptionContracts from "./Components/Content/AdoptionContracts";
+import AdoptionContracts from "./Components/Content/adoptionContract/AdoptionContracts";
 import MyProfile from "./Components/Content/user/personalData/MyProfile";
 import MyDonations from "./Components/Content/user/personalData/MyDonations";
 import MyAdoptionApplications from "./Components/Content/user/personalData/MyAdoptionApplications";
@@ -28,11 +27,10 @@ import ShelterDonations from "./Components/Content/shelter/shelterRelatedEntitie
 import "./App.css";
 
 function App() {
-  const { login, logout, isLoggedIn, userEmail, userRoles, isAuthenticated } =
-    useAuthentication();
+  const auth = useContext(AuthContext);
 
   let routes;
-  if (userRoles.includes("Administrator")) {
+  if (auth.userRoles.includes("Administrator")) {
     routes = (
       <>
         <Route path="/user" element={<Users />} />
@@ -57,7 +55,7 @@ function App() {
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
-  } else if (userRoles.includes("ShelterEmployee")) {
+  } else if (auth.userRoles.includes("ShelterEmployee")) {
     routes = (
       <>
         <Route path="/userShelter" element={<ManagedShelter />} />
@@ -86,7 +84,7 @@ function App() {
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
-  } else if (userRoles.includes("Adopter")) {
+  } else if (auth.userRoles.includes("Adopter")) {
     routes = (
       <>
         <Route path="/user/profile" element={<MyProfile />} />
@@ -106,7 +104,7 @@ function App() {
         <Route path="*" element={<Navigate replace to="/" />} />
       </>
     );
-  } else if (!isLoggedIn) {
+  } else if (!auth.isLoggedIn) {
     routes = (
       <>
         <Route path="/login" element={<Login />} />
@@ -116,31 +114,17 @@ function App() {
     );
   }
 
-  useEffect(() => {
-    isAuthenticated();
-  }, []);
-
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: isLoggedIn,
-        userEmail: userEmail,
-        userRoles: userRoles,
-        login: login,
-        logout: logout,
-      }}
-    >
-      <div className="App">
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/contact" element={<ContactInfo />} />
-            <Route path="/image" element={<Images />} />
-            {routes}
-          </Route>
-        </Routes>
-      </div>
-    </AuthContext.Provider>
+    <div className="App">
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<ContactInfo />} />
+          <Route path="/image" element={<Images />} />
+          {routes}
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

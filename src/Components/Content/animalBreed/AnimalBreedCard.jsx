@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 
-const AnimalBreedCard = ({ breed }) => {
+const AnimalBreedCard = ({ breed, editable }) => {
   const auth = useContext(AuthContext);
 
   return (
@@ -24,7 +24,7 @@ const AnimalBreedCard = ({ breed }) => {
           {breed.type}
         </Typography>
       </CardContent>
-      {(auth.userRoles.includes("Administrator") ||
+      {editable && (auth.userRoles.includes("Administrator") ||
         auth.userRoles.includes("ShelterEmployee")) && (
         <CardActions>
           <Button size="small">Edit</Button>
