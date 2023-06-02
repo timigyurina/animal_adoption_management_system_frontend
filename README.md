@@ -1,10 +1,10 @@
 # Animal Adoption Management System - Frontend Application
   
-####  For the backend, please visit [this](https://github.com/timigyurina/Animal_Adoption_Management_System_Backend) Githob repository.  
+####  For the backend, please visit [this](https://github.com/timigyurina/Animal_Adoption_Management_System_Backend) Github repository.  
  
 #### *Please note that this is an ongoing pet project of mine, continuously growing and evolving and may not yet have all pages and features fully implemented*
 
-## About 
+## About :paw_prints:    
 The current application is the frontend of my pet project, that aims to provide a centralised way to store and manage the adoption flow of animals living in shelters.
 Visitors of the application are able to use some of its features without registering, but the main functionalities can only be accessed by registered and logged-in users. These are further restricted by the type of the user who wants to access them. At this point, these types are Adopters, ShelterEmployees and Administrators.  
 **Adopters** are regular users who can register at any time and mainly use the application for browsing among shelters, animalbreeds, adoptable animals, viewing their images or filling in adoption applications to become possible adopters of an animal. They have a private menu where they can view their donations, adoption applications and contracts, and view or update their personal information.   
@@ -14,7 +14,7 @@ Visitors of the application are able to use some of its features without registe
 All roots and components are designed to provide an easy-to-understand user interface for this complex system and to help in enhancing the speed of the whole adoption process.
 
 
-## Main features and technologies
+## Main features and technologies :zap:    
 - React frontend with routing (react-router)
 - Authentication and authorization (managed with React's Context API): registering, logging in and having access/ability to view pages and components based on cookies received from the backend 
 - Custom authentication hook
