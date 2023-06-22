@@ -3,6 +3,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { Card, CardContent, Box, Typography } from "@mui/material";
 import AnimalDetailsModal from "./detailsAndUpdates/AnimalDetailsModal";
 import ImageUploadModal from "../image/creation/ImageUploadModal";
+import CreateAdoptionApplicationModal from "../adoptionApplication/creation/CreateAdoptionApplicationModal";
 import SnackbarWithMessage from "../../SharedElements/SnackbarWithMessage";
 
 const cardBoxStyles = {
@@ -25,15 +26,17 @@ const AnimalCard = ({
 }) => {
   const auth = useContext(AuthContext);
   const [imageHasBeenAdded, setImageHasBeenAdded] = useState(null);
+  const [
+    adoptionApplicationHasBeenCreated,
+    setAdoptionApplicationHasBeenCreated,
+  ] = useState(null);
+
   return (
     <Card key={animal.id}>
       <CardContent>
-        <Box sx={cardBoxStyles}>
-          <Typography sx={{ mb: 1 }} color="text.secondary">
-            Name
-          </Typography>
-          <Typography variant="body2">{animal.name}</Typography>
-        </Box>
+        <Typography variant="h5" textAlign="center" mb={1}>
+          {animal.name}
+        </Typography>
         <Box sx={cardBoxStyles}>
           <Typography sx={{ mb: 1 }} color="text.secondary">
             Status
@@ -111,6 +114,36 @@ const AnimalCard = ({
             />
           </Box>
         )}
+
+        {animal.status === "WaitingForAdoption" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CreateAdoptionApplicationModal
+              animalId={animal.id}
+              animalName={animal.name}
+              onAdoptionApplicationWasCreated={(application) =>
+                setAdoptionApplicationHasBeenCreated(
+                  `Application for ${application.animal.name} has been created`
+                )
+              }
+            />
+          </Box>
+        )}
+
+        {adoptionApplicationHasBeenCreated && (
+          <SnackbarWithMessage
+            message={adoptionApplicationHasBeenCreated}
+            severity="success"
+            opened={adoptionApplicationHasBeenCreated !== null}
+            closed={() => setAdoptionApplicationHasBeenCreated(false)}
+          />
+        )}
+
         {imageHasBeenAdded && (
           <SnackbarWithMessage
             message={imageHasBeenAdded}
